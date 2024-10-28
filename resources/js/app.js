@@ -59,3 +59,52 @@ document.addEventListener("DOMContentLoaded", () => {
     chart04();
     map01();
 });
+window.loadContent = async function (url) {
+    try {
+        // Show loading state
+        const mainContent = document.getElementById("main-content");
+        mainContent.innerHTML =
+            '<div class="flex items-center justify-center h-full"><div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>';
+
+        // Update URL without page refresh
+        history.pushState({}, "", url);
+
+        // Fetch new content
+        const response = await fetch(url, {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                Accept: "text/html",
+                "X-CSRF-TOKEN": document.querySelector(
+                    'meta[name="csrf-token"]'
+                ).content,
+            },
+        });
+
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const html = await response.text();
+        mainContent.innerHTML = html;
+
+        // Re-initialize any JavaScript that needs to run on the new content
+        initializeComponents();
+    } catch (error) {
+        console.error("Error loading content:", error);
+        // Show error message to user
+        mainContent.innerHTML =
+            '<div class="text-red-500">Error loading content. Please try again.</div>';
+    }
+};
+
+// Handle browser back/forward buttons
+window.addEventListener("popstate", (event) => {
+    loadContent(window.location.href);
+});
+
+// Function to reinitialize components after content load
+function initializeComponents() {
+    // Add any initialization code here for components that need it
+    // For example, if you're using Alpine.js components:
+    if (window.Alpine) {
+        window.Alpine.initTree(document.getElementById("main-content"));
+    }
+}

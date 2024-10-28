@@ -46,6 +46,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         <!-- ===== Content Area End ===== -->
     </div>
     <!-- ===== Page Wrapper End ===== -->
+    @vite('resources/js/app.js')
 </body>
 
 </html>

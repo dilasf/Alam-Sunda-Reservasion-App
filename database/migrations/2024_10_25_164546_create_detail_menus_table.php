@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('detail_menus', function (Blueprint $table) {
-            $table->tinyInteger('idDetailMenu')->primary();
+            $table->tinyInteger('idDetailMenu')->unsigned()->primary()->autoIncrement();
             $table->string('nama',100);
             $table->text('deskripsi');
             $table->string('gambar');

@@ -23,7 +23,7 @@ class Pelanggan
         //admin
         $userRole = Auth::user()->role;
         if($userRole == 1){
-            return redirect()->route(route: 'admin.dashboard');
+            return redirect()->route(route: 'admin.dashboard.index');
         }
         //owner
         elseif($userRole == 2){

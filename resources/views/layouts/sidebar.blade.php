@@ -22,54 +22,67 @@
         <!-- Sidebar Menu -->
         <nav class="mt-5 px-4 py-4 lg:mt-9 lg:px-6" x-data="{ selected: $persist('Dashboard') }">
             <!-- Menu Group -->
-            <div>
+            <div x-data="{ activeMenu: '{{ request()->route()->getName() }}' }">
                 <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">MENU</h3>
 
                 <ul class="mb-6 flex flex-col gap-1.5">
-                    <!-- Menu Item Dashboard -->
                     <li>
-                        <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                            href="#" @click.prevent="selected = (selected === 'Dashboard' ? '' : 'Dashboard')"
-                            :class="{
-                                'bg-graydark dark:bg-meta-4': selected === 'Dashboard'
-                            }">
-                            Dashboard
+                        <a href="{{ route('admin.dashboard.index') }}"
+                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.dashboard.index', 'text-bodydark1': activeMenu !== 'admin.dashboard.index' }">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span>Dashboard</span>
                         </a>
                     </li>
+
                     <li>
-                        <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                            href="#" @click.prevent="selected = (selected === 'Detail Menu' ? '' : 'Detail Menu')"
-                            :class="{
-                                'bg-graydark dark:bg-meta-4': selected === 'Detail Menu'
-                            }">
-                            Detail Menu
+                        <a href="{{ route('admin.detail.index') }}"
+                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.detail.index', 'text-bodydark1': activeMenu !== 'admin.detail.index' }">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span>Detail Menu</span>
                         </a>
                     </li>
+
                     <li>
-                        <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                            href="#" @click.prevent="selected = (selected === 'Menu' ? '' : 'Menu')"
-                            :class="{
-                                'bg-graydark dark:bg-meta-4': selected === 'Menu'
-                            }">
-                            Menu
+                        <a href="{{ route('admin.menu.index') }}"
+                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.menu.index', 'text-bodydark1': activeMenu !== 'admin.menu.index' }">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            <span>Menu</span>
                         </a>
                     </li>
+
                     <li>
-                        <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                            href="#" @click.prevent="selected = (selected === 'Meja' ? '' : 'Meja')"
-                            :class="{
-                                'bg-graydark dark:bg-meta-4': selected === 'Meja'
-                            }">
-                            Meja
+                        <a href="{{ route('admin.meja.index') }}"
+                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.meja.index', 'text-bodydark1': activeMenu !== 'admin.meja.index' }">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            <span>Meja</span>
                         </a>
                     </li>
+
                     <li>
-                        <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                            href="#" @click.prevent="selected = (selected === 'Reservasi' ? '' : 'Reservasi')"
-                            :class="{
-                                'bg-graydark dark:bg-meta-4': selected === 'Reservasi'
-                            }">
-                            Reservasi
+                        <a href="{{ route('admin.reservasi.index') }}"
+                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.reservasi.index', 'text-bodydark1': activeMenu !== 'admin.reservasi.index' }">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>Reservasi</span>
                         </a>
                     </li>
                 </ul>

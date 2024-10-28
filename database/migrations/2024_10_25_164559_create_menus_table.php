@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('menus', function (Blueprint $table) {
-            $table->tinyInteger('idMenu')->primary();
+            $table->tinyInteger('idMenu')->unsigned()->primary()->autoIncrement();
             $table->string('nama',100);
-            $table->tinyInteger('idDetailMenu')->unsigned()->foreignId('idDetailMenu')->constrained('detail_menus', 'idDetailMenu')->onDelete('cascade');
-            $table->tinyInteger('idKategori')->unsigned()->foreignId('idKategori')->constrained('kategoris', 'idKategori')->onDelete('cascade');
+            $table->string('gambar');
+            $table->decimal('harga', 10,2);
             $table->timestamps();
         });
     }
