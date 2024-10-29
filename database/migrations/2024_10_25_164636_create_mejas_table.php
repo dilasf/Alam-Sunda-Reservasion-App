@@ -15,7 +15,7 @@ return new class extends Migration
             $table->tinyInteger('idMeja')->primary()->autoIncrement();
             $table->string('nama',100);
             $table->smallInteger('jumlahPengunjung');
-            $table->string('status',50)->default('available');
+            $table->enum('status', ['Tersedia', 'Tidak Tersedia'])->default('Tersedia');
             $table->string('lokasi',150);
             $table->timestamps();
         });

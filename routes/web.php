@@ -35,6 +35,8 @@ Route::middleware(['auth','verified','admin'])->name('admin.')->prefix('admin')-
     Route::resource('/menu', MenuController::class);
     Route::resource('/meja', MejaController::class);
     Route::resource('/reservasi', ReservasiController::class);
+    Route::get('/reservasi/{reservasi}/detail', [ReservasiController::class, 'detail'])
+        ->name('reservasi.detail');
 });
 //admin
 // Route::get('/admin/dashboard', function () {
