@@ -236,41 +236,70 @@
             </div>
         </div>
     </section>
-    <section class="pt-4 pb-12 bg-gray-50">
-        <div class="my-8 text-center">
-            <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
-                Food Gallery</h2>
-            <p class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. soluta sapient</p>
-        </div>
-        <div class="container grid gap-4 mx-auto lg:grid-cols-3">
-            <div class="w-full rounded">
-                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="image" class="object-cover w-full h-80">
+    <section class="pt-4 pb-12 min-h-screen flex flex-col items-center justify-center font-['Inter',sans-serif] "
+        style="
+        background-color: #141416;
+        background-image: url('{{ asset('src/images/cover/shape-5.png') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: left;
+        background-size: 60% auto;
+    ">
+        <div class="container mx-auto px-4">
+            <h1 class="text-center text-1xl text-[#E0C48B] mb-2">
+                PAKET RECOMENDASI
+            </h1>
+            <div class="flex justify-center mb-15">
+                <img class="" src="{{ asset('src/images/cover/separator.svg') }}" alt=""
+                    width="100">
             </div>
-            <div class="w-full rounded">
-                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8NXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="image" class="object-cover w-full h-80">
+            <h1 class="text-center text-4xl text-white mb-15">
+                Paket Nasi Box
+            </h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                @foreach ($menus->take(6) as $menu)
+                    <div class="flex items-start space-x-4 pb-4 border-b border-gray-700">
+                        <img src="{{ asset('storage/' . $menu->gambar) }}" alt="{{ $menu->nama }}"
+                            class="w-[60px] h-[60px] rounded-lg object-cover flex-shrink-0">
+
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg truncate text-white">
+                                    {{ $menu->nama }}
+                                </h3>
+                                <div class="text-sm text-[#E0C48B] ml-2 flex-shrink-0">
+                                    Rp {{ number_format($menu->harga, 0, ',', '.') }}
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-gray-400 mt-1 line-clamp-2">
+                                @foreach ($menu->detailMenus as $detail)
+                                    {{ $detail->nama }}@if (!$loop->last)
+                                        ,
+                                    @endif
+                                @endforeach
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-            <div class="w-full rounded">
-                <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="image" class="object-cover w-full h-80">
-            </div>
-            <div class="w-full rounded">
-                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTB8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="image" class="object-cover w-full h-80">
-            </div>
-            <div class="w-full rounded">
-                <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="image" class="object-cover w-full h-80">
-            </div>
-            <div class="w-full rounded">
-                <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTh8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="image" class="object-cover w-full h-80">
+
+            <div class="text-center mt-8">
+                <p class="text-sm text-gray-400">
+                    During winter daily from
+                    <span class="font-bold">7:00 pm</span> to
+                    <span class="font-bold">9:00 pm</span>
+                </p>
+                <button
+                    class="mt-4 px-4 py-2 text-sm text-[#E0C48B] border border-[#E0C48B] hover:bg-[#b69b41] hover:text-gray-900 transition-colors">
+                    <a href="#">PESAN SEKARANG</a>
+                </button>
             </div>
         </div>
     </section>
 
-    <section class="pt-4 pb-12 bg-gray-800">
+    {{-- <section class="pt-4 pb-12 bg-gray-800">
         <div class="my-16 text-center">
             <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
                 Testimonial </h2>
@@ -329,15 +358,15 @@
                 </div>
             </div>
         </div>
-    </section>
-    <section class="pt-12 pb-12 bg-gradient-to-r from-[#1f1f22] to-[#151518] font-['Inter',sans-serif]">
+    </section> --}}
+    <section class="pt-12 pb-12 bg-gradient-to-r min-h-screen from-[#1f1f22] to-[#151518] font-['Inter',sans-serif]">
         <div class="container mx-auto p-6 sm:p-12 md:w-3/4">
             <div class="grid grid-cols-1 md:grid-cols-3">
                 <!-- Reservasi Online (Bagian Kiri) -->
                 <div class="md:col-span-2 bg-[#0D0D0B] shadow-lg p-8">
                     <h1 class="text-6xl mb-4 text-white text-center">Reservasi Online</h1>
                     <p class="text-sm mb-6 text-white text-center">
-                        Booking request <span class="text-[#FFE077]">+88-123-123456</span> or fill out the order form
+                        Booking request <span class="text-[#E0C48B]">+88-123-123456</span> or fill out the order form
                     </p>
                     @if ($errors->any())
                         <div class="p-4 mb-4 bg-red-100 border border-red-400 text-red-700">
@@ -359,27 +388,27 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <input type="text" name="nama_depan" placeholder="Nama Depan"
                                 value="{{ old('nama_depan') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('nama_depan') border-red-500 @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('nama_depan') @enderror"
                                 required>
                             <input type="text" name="nama_belakang" placeholder="Nama Belakang"
                                 value="{{ old('nama_belakang') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('nama_belakang') border-red-500 @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('nama_belakang') @enderror"
                                 required>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <input type="email" name="email" placeholder="Email" value="{{ old('email') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('email') border-red-500 @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('email') @enderror"
                                 required>
                             <input type="text" name="no_telepon" placeholder="Nomor Telepon"
                                 value="{{ old('no_telepon') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('no_telepon') border-red-500 @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('no_telepon') @enderror"
                                 required>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <select name="jumlahPengunjung"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:outline-none focus:border-[#FFE077] transition-colors @error('jumlahPengunjung') border-red-500 @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('jumlahPengunjung') @enderror"
                                 required>
-                                <option value="">Jumlah Pengunjung</option>
+                                <option class="text-gray-400" value="">Jumlah Pengunjung</option>
                                 <option value="1" {{ old('jumlahPengunjung') == '1' ? 'selected' : '' }}>1 Orang
                                 </option>
                                 <option value="2" {{ old('jumlahPengunjung') == '2' ? 'selected' : '' }}>2 Orang
@@ -391,13 +420,13 @@
                             </select>
                             <input type="datetime-local" name="tanggal" placeholder="Tanggal dan Waktu"
                                 value="{{ old('tanggal', date('Y-m-d\TH:i')) }}" min="{{ date('Y-m-d\TH:i') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('tanggal') border-red-500 @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('tanggal') @enderror"
                                 required>
 
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-4">
                             <select name="idMeja"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:outline-none focus:border-[#FFE077] transition-colors @error('idMeja') border-red-500 @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:outline-none focus:border-[#FFE077] transition-colors @error('idMeja') @enderror"
                                 required>
                                 <option value="">Pilih Meja</option>
                                 @foreach ($mejas as $meja)
@@ -420,7 +449,7 @@
                     style="background-image: url('{{ asset('src/images/cover/form-pattern.png') }}')">
                     <h1 class="text-4xl font-bold mb-4 text-white">Contact Us</h1>
                     <p class="text-lg mb-6 text-white">
-                        Booking Request <span class="text-[#FFE077]">+88-123-123456</span>
+                        Booking Request <span class="text-[#E0C48B]">+88-123-123456</span>
                     </p>
                     <div class="border-t border-gray-700 my-4"></div>
                     <p class="text-lg mb-4 text-white">

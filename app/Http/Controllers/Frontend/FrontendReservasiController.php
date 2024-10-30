@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Meja;
+use App\Models\Menu;
 use App\Models\Reservasi;
 use App\Models\Transaksi;
 use Carbon\Carbon;
@@ -22,7 +23,8 @@ class FrontendReservasiController extends Controller
 {
     // Tampilkan form reservasi
     $mejas = Meja::where('status', 'Tersedia')->get();
-    return view('frontend.reservasi.dashboard', compact('mejas'));
+    $menus = Menu::with('detailMenus')->get();
+    return view('frontend.reservasi.dashboard', compact('mejas','menus'));
 }
 
 public function storeReservasi(Request $request)
