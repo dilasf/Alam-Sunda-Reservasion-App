@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
         }
         //pelanggan
         elseif($loggedInUserRole == '3'){
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('frontend.reservasi.dashboard', absolute: false));
         }
 
         return redirect()->intended(route('dashboard', absolute: false));

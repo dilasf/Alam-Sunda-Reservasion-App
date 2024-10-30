@@ -20,6 +20,10 @@ class Reservasi extends Model
         'jumlahPengunjung',
         'status'
     ];
+    public function transaksi()
+    {
+        return $this->hasOne(Transaksi::class, 'idReservasi', 'idReservasi');
+    }
 
     public function meja()
     {

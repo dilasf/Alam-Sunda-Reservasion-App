@@ -31,7 +31,7 @@ class Admin
         //pelanggan
         }
         elseif($userRole == 3){
-            return redirect()->route('dashboard');
+            return redirect()->route('frontend.reservasi.dashboard');
         }
 
 

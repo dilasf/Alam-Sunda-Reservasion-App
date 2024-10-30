@@ -339,36 +339,79 @@
                     <p class="text-sm mb-6 text-white text-center">
                         Booking request <span class="text-[#FFE077]">+88-123-123456</span> or fill out the order form
                     </p>
-                    <form>
+                    @if ($errors->any())
+                        <div class="p-4 mb-4 bg-red-100 border border-red-400 text-red-700">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="p-4 mb-4 bg-red-100 border border-red-400 text-red-700">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('frontend.reservasi.store') }}">
+                        @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <input type="text" placeholder="Your Name"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors">
-                            <input type="text" placeholder="Phone Number"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors">
+                            <input type="text" name="nama_depan" placeholder="Nama Depan"
+                                value="{{ old('nama_depan') }}"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('nama_depan') border-red-500 @enderror"
+                                required>
+                            <input type="text" name="nama_belakang" placeholder="Nama Belakang"
+                                value="{{ old('nama_belakang') }}"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('nama_belakang') border-red-500 @enderror"
+                                required>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <select
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:outline-none focus:border-[#FFE077] transition-colors">
-                                <option>1 Person</option>
-                                <option>2 People</option>
-                                <option>3 People</option>
-                                <option>4 People</option>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="email" name="email" placeholder="Email" value="{{ old('email') }}"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('email') border-red-500 @enderror"
+                                required>
+                            <input type="text" name="no_telepon" placeholder="Nomor Telepon"
+                                value="{{ old('no_telepon') }}"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('no_telepon') border-red-500 @enderror"
+                                required>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <select name="jumlahPengunjung"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:outline-none focus:border-[#FFE077] transition-colors @error('jumlahPengunjung') border-red-500 @enderror"
+                                required>
+                                <option value="">Jumlah Pengunjung</option>
+                                <option value="1" {{ old('jumlahPengunjung') == '1' ? 'selected' : '' }}>1 Orang
+                                </option>
+                                <option value="2" {{ old('jumlahPengunjung') == '2' ? 'selected' : '' }}>2 Orang
+                                </option>
+                                <option value="3" {{ old('jumlahPengunjung') == '3' ? 'selected' : '' }}>3 Orang
+                                </option>
+                                <option value="4" {{ old('jumlahPengunjung') == '4' ? 'selected' : '' }}>4 Orang
+                                </option>
                             </select>
-                            <input type="text" placeholder="DD------YYYY"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors">
-                            <select
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:outline-none focus:border-[#FFE077] transition-colors">
-                                <option>08:00 am</option>
-                                <option>09:00 am</option>
-                                <option>10:00 am</option>
-                                <option>11:00 am</option>
+                            <input type="datetime-local" name="tanggal" placeholder="Tanggal dan Waktu"
+                                value="{{ old('tanggal', date('Y-m-d\TH:i')) }}" min="{{ date('Y-m-d\TH:i') }}"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('tanggal') border-red-500 @enderror"
+                                required>
+
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-4">
+                            <select name="idMeja"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:outline-none focus:border-[#FFE077] transition-colors @error('idMeja') border-red-500 @enderror"
+                                required>
+                                <option value="">Pilih Meja</option>
+                                @foreach ($mejas as $meja)
+                                    <option value="{{ $meja->idMeja }}"
+                                        {{ old('idMeja') == $meja->idMeja ? 'selected' : '' }}>
+                                        Meja {{ $meja->idMeja }} (Kapasitas: {{ $meja->jumlahPengunjung }})
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
-                        <textarea placeholder="Message"
-                            class="p-3 bg-[#1A1A1C] border border-gray-700 w-full mb-4 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors"></textarea>
-                        <button
-                            class="w-full p-3 bg-[#FFE077] text-black font-bold hover:bg-[#b69b41] transition-colors">BOOK
-                            A TABLE</button>
+                        <button type="submit"
+                            class="w-full p-3 bg-[#FFE077] text-black font-bold hover:bg-[#b69b41] transition-colors">
+                            BUAT RESERVASI
+                        </button>
                     </form>
                 </div>
 

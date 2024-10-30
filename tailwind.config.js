@@ -12,6 +12,7 @@ module.exports = {
     theme: {
         fontFamily: {
             satoshi: ["Satoshi", "sans-serif"],
+            sans: ["Inter", "sans-serif"],
         },
         screens: {
             "2xsm": "375px",
@@ -310,4 +311,11 @@ module.exports = {
         },
     },
     plugins: [],
+    future: {
+        removeDeprecatedGapUtilities: true,
+        purgeLayersByDefault: true,
+    },
+    experimental: {
+        applyComplexClasses: true,
+    },
 };

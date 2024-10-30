@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id('idTransaksi');
-            $table->string('fotoBukti');
+            $table->string('fotoBukti')->nullable();
             $table->date('tanggal');
             $table->decimal('totalPembayaran', 10, 2);
             $table->decimal('totalDibayar', 10, 2);
