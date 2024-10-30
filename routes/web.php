@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DetailMenuController;
 use App\Http\Controllers\Admin\MejaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ReservasiController;
+use App\Http\Controllers\Admin\TransaksiController;
 use App\Http\Controllers\Frontend\FrontendReservasiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,7 @@ Route::middleware(['auth','verified','admin'])->name('admin.')->prefix('admin')-
     Route::resource('/reservasi', ReservasiController::class);
     Route::get('/reservasi/{reservasi}/detail', [ReservasiController::class, 'detail'])
         ->name('reservasi.detail');
+    Route::resource('/transaksi', TransaksiController::class);
 });
 //admin
 // Route::get('/admin/dashboard', function () {

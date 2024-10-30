@@ -141,6 +141,18 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 closeModal();
             }
         });
+
+        function showBukti(url) {
+            const buktiImage = document.getElementById('buktiImage');
+            if (buktiImage) {
+                buktiImage.src = url;
+            }
+            document.getElementById('buktiModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('buktiModal').classList.add('hidden');
+        }
     </script>
 </body>
 

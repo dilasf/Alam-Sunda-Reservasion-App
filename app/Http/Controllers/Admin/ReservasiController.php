@@ -11,11 +11,29 @@ use Illuminate\Support\Facades\Auth;
 
 class ReservasiController extends Controller
 {
+    public function checkAndUpdateStatus()
+    {
+        // Ambil semua reservasi yang belum selesai
+        $reservations = Reservasi::whereIn('status', ['pending', 'dikonfirmasi'])
+            ->where('tanggal', '<', Carbon::now()->subHours(2))
+            ->get();
+
+        foreach ($reservations as $reservation) {
+            // Update status reservasi menjadi selesai
+            $reservation->update(['status' => 'selesai']);
+
+            // Update status meja menjadi tersedia
+            Meja::find($reservation->idMeja)->update(['status' => 'Tersedia']);
+        }
+
+        return response()->json(['message' => 'Status reservasi berhasil diperbarui']);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->checkAndUpdateStatus();
 
         $reservasis = Reservasi::with(['meja', 'user'])->latest()->get();
         return view('admin.reservasi.index', compact('reservasis'));

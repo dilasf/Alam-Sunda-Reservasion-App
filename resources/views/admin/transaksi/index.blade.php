@@ -1,5 +1,6 @@
 <x-admin-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        {{-- Alert Messages --}}
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
                 role="alert">
@@ -12,13 +13,6 @@
                 <span class="block sm:inline">{{ session('error') }}</span>
             </div>
         @endif
-        <div class="mb-4 flex flex-wrap gap-5 xl:gap-20">
-            <a href="{{ route('admin.reservasi.create') }}"
-                class="inline-flex items-center justify-center rounded-md bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 transition duration-300">
-                Tambah Reservasi
-            </a>
-        </div>
-
         <!-- Main Table -->
         <div
             class="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -27,55 +21,59 @@
                     <thead>
                         <tr class="bg-gray-200 text-left dark:bg-meta-4">
                             <th class="px-4 py-4 font-medium text-black dark:text-white">No</th>
-                            <th class="px-4 py-4 font-medium text-black dark:text-white">Nama</th>
-                            <th class="px-4 py-4 font-medium text-black dark:text-white">Meja</th>
+                            <th class="px-4 py-4 font-medium text-black dark:text-white">Nama Pemesan</th>
                             <th class="px-4 py-4 font-medium text-black dark:text-white">Tanggal</th>
+                            <th class="px-4 py-4 font-medium text-black dark:text-white">Total Pembayaran</th>
                             <th class="px-4 py-4 font-medium text-black dark:text-white">Status</th>
+                            <th class="px-4 py-4 font-medium text-black dark:text-white">Bukti Pembayaran</th>
                             <th class="px-4 py-4 font-medium text-black dark:text-white">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($reservasis as $index => $reservasi)
+                        @foreach ($transaksis as $transaksi)
                             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200">
-                                <td class="border-t px-4 py-4">{{ $index + 1 }}</td>
+                                <td class="border-t px-4 py-4">{{ $transaksi->idTransaksi }}</td>
                                 <td class="border-t px-4 py-4">
-                                    {{ $reservasi->nama_depan }} {{ $reservasi->nama_belakang }}
+                                    {{ $transaksi->reservasi->nama_depan }} {{ $transaksi->reservasi->nama_belakang }}
                                 </td>
                                 <td class="border-t px-4 py-4">
-                                    @if ($reservasi->meja)
-                                        {{ $reservasi->meja->nama }} (Kapasitas
-                                        {{ $reservasi->meja->jumlahPengunjung }})
-                                    @else
-                                        <span class="text-gray-400">Tidak tersedia</span>
-                                    @endif
+                                    {{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d/m/Y') }}
                                 </td>
                                 <td class="border-t px-4 py-4">
-                                    {{ \Carbon\Carbon::parse($reservasi->tanggal)->format('d/m/Y H:i') }}
+                                    Rp {{ number_format($transaksi->totalPembayaran, 0, ',', '.') }}
                                 </td>
                                 <td class="border-t px-4 py-4">
                                     <span
                                         class="px-3 py-1 text-xs rounded-full font-medium
-                                    {{ $reservasi->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                    {{ $reservasi->status === 'dikonfirmasi' ? 'bg-green-100 text-green-800' : '' }}
-                                    {{ $reservasi->status === 'selesai' ? 'bg-blue-100 text-blue-800' : '' }}
-                                    {{ $reservasi->status === 'dibatalkan' ? 'bg-red-100 text-red-800' : '' }}">
-                                        {{ ucfirst($reservasi->status) }}
+                                    {{ $transaksi->isPending() ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                    {{ $transaksi->isVerified() ? 'bg-green-100 text-green-800' : '' }}
+                                    {{ $transaksi->isDibayar() ? 'bg-blue-100 text-blue-800' : '' }}
+                                    {{ $transaksi->isDitolak() ? 'bg-red-100 text-red-800' : '' }}">
+                                        {{ ucfirst($transaksi->status) }}
                                     </span>
                                 </td>
                                 <td class="border-t px-4 py-4">
+                                    @if ($transaksi->fotoBukti)
+                                        <a href="#" onclick="showBukti('{{ $transaksi->getBuktiUrl() }}')"
+                                            class="text-blue-600 hover:text-blue-900">
+                                            Lihat Bukti
+                                        </a>
+                                    @else
+                                        <span class="text-gray-500">Belum ada bukti</span>
+                                    @endif
+                                </td>
+                                <td class="border-t px-4 py-4">
                                     <div class="flex space-x-2">
-                                        <button type="button" onclick="showDetail({{ $reservasi->idReservasi }})"
+                                        {{-- <a href="{{ route('admin.transaksi.show', $transaksi) }}"
                                             class="inline-flex items-center px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                             Detail
-                                        </button>
-                                        <a href="{{ route('admin.reservasi.edit', $reservasi->idReservasi) }}"
+                                        </a> --}}
+                                        <a href="{{ route('admin.transaksi.edit', $transaksi) }}"
                                             class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-200">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -84,7 +82,7 @@
                                             </svg>
                                             Edit
                                         </a>
-                                        <form action="{{ route('admin.reservasi.destroy', $reservasi->idReservasi) }}"
+                                        <form action="{{ route('admin.transaksi.destroy', $transaksi) }}"
                                             method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -108,9 +106,45 @@
                 </table>
             </div>
         </div>
-
+        <div id="buktiModal" class="fixed z-50 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
+            role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div
+                    class="inline-block align-bottom bg-white dark:bg-boxdark rounded-sm text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white dark:bg-boxdark px-5 pt-6 pb-2.5 sm:px-7.5 sm:pt-7.5">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                                <h3 class="text-lg leading-6 font-medium text-black dark:text-white" id="modal-title">
+                                    Bukti Pembayaran
+                                </h3>
+                                <div class="mt-4">
+                                    @if ($transaksi->fotoBukti)
+                                        <div class="mb-6">
+                                            <div class="border border-stroke dark:border-strokedark rounded-sm p-4">
+                                                <img id="buktiImage" src="{{ Storage::url($transaksi->fotoBukti) }}"
+                                                    alt="{{ $transaksi->idTransaksi }}"
+                                                    class="max-w-full mx-auto rounded-sm shadow">
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-meta-4 px-5 py-3 sm:px-7.5 sm:flex sm:flex-row-reverse">
+                        <button type="button"
+                            class="w-full inline-flex justify-center rounded-sm border border-stroke dark:border-strokedark shadow-sm px-4 py-2 bg-white dark:bg-boxdark text-base font-medium text-black dark:text-white hover:bg-gray-50 dark:hover:bg-meta-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:ml-3 sm:w-auto sm:text-sm"
+                            onclick="closeModal()">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Detail Modal -->
-        <div id="detailModal" class="fixed inset-0 bg-black/50 dark:bg-black/60 hidden items-center justify-center">
+        {{-- <div id="detailModal" class="fixed inset-0 bg-black/50 dark:bg-black/60 hidden items-center justify-center">
             <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-2xl w-full mx-4 shadow-lg dark:shadow-gray-900">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Detail Reservasi</h2>
@@ -126,7 +160,6 @@
                     <!-- Detail content will be injected here -->
                 </div>
             </div>
-        </div>
-
+        </div> --}}
     </div>
 </x-admin-layout>
