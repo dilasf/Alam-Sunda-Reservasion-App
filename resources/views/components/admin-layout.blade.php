@@ -130,7 +130,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 });
         }
 
-        function closeModal() {
+        function closeModalReservasi() {
             document.getElementById('detailModal').classList.add('hidden');
             document.getElementById('detailModal').classList.remove('flex');
         }

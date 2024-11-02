@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('pengirimans', function (Blueprint $table) {
             $table->id('idPengiriman');
+            $table->string('nama');
             $table->string('alamat');
-            $table->string('nomorTelepon',14);
+            $table->text('catatan')->nullable();
+            $table->string('nomorTelepon', 14);
             $table->decimal('biayaPengiriman', 10, 2);
             $table->enum('status', ['pending', 'dikirim', 'selesai', 'dibatalkan']);
             $table->timestamps();

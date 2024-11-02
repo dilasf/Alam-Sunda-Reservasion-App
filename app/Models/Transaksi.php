@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class Transaksi extends Model
 {
     protected $primaryKey = 'idTransaksi';
+    protected $guarded = ['idTransaksi'];
 
     // Definisi konstanta status
     const STATUS_PENDING = 'pending';
@@ -21,13 +22,18 @@ class Transaksi extends Model
         'tanggal',
         'totalPembayaran',
         'totalDibayar',
-        'status'
+        'status',
+        'idPesanan',
     ];
 
     // Relasi ke model Reservasi
     public function reservasi()
     {
         return $this->belongsTo(Reservasi::class, 'idReservasi', 'idReservasi');
+    }
+    public function pesanan()
+    {
+        return $this->belongsTo(Pesanan::class, 'idPesanan', 'idPesanan');
     }
 
     // Method untuk cek status
@@ -65,4 +71,6 @@ class Transaksi extends Model
         }
         return Storage::url('public/bukti_pembayaran/' . $this->fotoBukti);
     }
+
+
 }

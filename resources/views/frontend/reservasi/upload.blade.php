@@ -7,12 +7,12 @@
                 <div class="md:col-span-2 bg-[#0D0D0B] shadow-lg p-8">
                     <h1 class="text-6xl mb-4 text-white text-center">Reservasi Online</h1>
                     <p class="text-sm mb-6 text-white text-center">
-                        Booking request <span class="text-[#FFE077]">+88-123-123456</span> or fill out the order form
+                        Permintaan Reservasi <span class="text-[#E0C48B]">+62 812-2397-8735</span> atau isi Form ini
                     </p>
 
                     {{-- Tampilkan informasi transaksi --}}
                     <div class="mb-6 text-white">
-                        <div class="p-4 bg-[#1A1A1C] rounded-lg">
+                        <div class="p-4 bg-[#1A1A1C]">
                             <p class="mb-2">Total Pembayaran: <span class="text-[#FFE077]">Rp
                                     {{ number_format($transaksi->totalPembayaran, 0, ',', '.') }}</span></p>
                             <p class="text-sm text-gray-400">Upload bukti pembayaran Anda di bawah ini</p>
@@ -82,29 +82,23 @@
                 </div>
 
                 <!-- Contact Us (Bagian Kanan) -->
-                <div class="bg-no-repeat bg-cover bg-center p-8 h-full"
+                <div class="bg-no-repeat bg-cover bg-center p-8 h-full text-center font-['Inter',sans-serif]"
                     style="background-image: url('{{ asset('src/images/cover/form-pattern.png') }}')">
-                    <h1 class="text-4xl font-bold mb-4 text-white">Contact Us</h1>
-                    <p class="text-lg mb-6 text-white">
-                        Booking Request <span class="text-[#FFE077]">+88-123-123456</span>
+                    <h1 class="text-4xl mb-6 text-white">Hubungi Kami</h1>
+                    <p class="text-lg mb-4 text-white">
+                        Permintaan Reservasi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
                     </p>
                     <div class="border-t border-gray-700 my-4"></div>
-                    <p class="text-lg mb-4 text-white">
-                        <strong>Location</strong><br>
-                        Restaurant St, Delicious City,<br>
-                        London 9578, UK
+                    <p class="text-md mb-4 text-white">
+                        <strong>Lokasi</strong><br>
+                        Jl. Raya Puncak - Gadog No.239, Kec. Megamendung, Kabupaten Bogor, Jawa Barat
+                        16770
                     </p>
                     <div class="border-t border-gray-700 my-4"></div>
-                    <p class="text-lg mb-4 text-white">
-                        <strong>Lunch Time</strong><br>
-                        Monday to Sunday<br>
-                        11.00 am - 2.30pm
-                    </p>
-                    <div class="border-t border-gray-700 my-4"></div>
-                    <p class="text-lg mb-4 text-white">
-                        <strong>Dinner Time</strong><br>
-                        Monday to Sunday<br>
-                        05.00 pm - 10.00pm
+                    <p class="text-md mb-4 text-white">
+                        <strong>Jam Buka</strong><br>
+                        Senin sampai Minggu<br>
+                        09.00 am - 09.00pm
                     </p>
                 </div>
             </div>

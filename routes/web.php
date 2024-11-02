@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\MejaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ReservasiController;
 use App\Http\Controllers\Admin\TransaksiController;
+use App\Http\Controllers\Frontend\FrontendPemesananController;
 use App\Http\Controllers\Frontend\FrontendReservasiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,27 @@ Route::middleware(['auth', 'verified', 'pelanggan'])
         Route::get('/upload/{idTransaksi}', [FrontendReservasiController::class, 'showUploadBukti'])->name('upload');
         Route::post('/upload/{idTransaksi}', [FrontendReservasiController::class, 'uploadBukti'])->name('upload.store');
         Route::get('/success/{idReservasi}', [FrontendReservasiController::class, 'success'])->name('success');
+});
+
+Route::middleware(['auth', 'verified', 'pelanggan'])
+    ->prefix('pelanggan')
+    ->name('frontend.pemesanan.')
+    ->group(function() {
+        // Tampilan menu dan pemesanan
+        Route::get('/', [FrontendPemesananController::class, 'index'])->name('index');
+
+        // Proses pesanan
+        Route::post('/process', [FrontendPemesananController::class, 'processPesanan'])->name('process');
+
+        // Detail menu
+        Route::get('/menu/{id}', [FrontendPemesananController::class, 'getMenuWithDetails'])->name('menu.details');
+
+        // Form pengiriman dan penyimpanan
+        Route::get('/{idPesanan}/pengiriman', [FrontendPemesananController::class, 'showPengirimanForm'])->name('pengiriman');
+        Route::post('/{idPesanan}/pengiriman', [FrontendPemesananController::class, 'storePengiriman'])->name('pengiriman.store');
+        Route::get('/pemesanan/{idPesanan}/upload', [FrontendPemesananController::class, 'showUploadForm'])->name('upload');
+Route::post('/pemesanan/{idPesanan}/transaksi', [FrontendPemesananController::class, 'storeTransaksi'])->name('transaksi.store');
+Route::get('/pemesanan/{idPesanan}/status', [FrontendPemesananController::class, 'showTransactionStatus'])->name('status');
 });
 // Route::prefix('reservasi')->name('frontend.reservasi.')->group(function () {
 //     Route::get('/dashboard', [FrontendReservasiController::class, 'createReservasi'])->name('create');

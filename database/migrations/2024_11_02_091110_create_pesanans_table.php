@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id('idPesanan');
             $table->foreignId('idUser')->constrained('users', 'id')->onDelete('cascade');
-            $table->foreignId('idItemPesanan')->constrained('item_pesanans', 'idItemPesanan')->onDelete('cascade');
             $table->foreignId('idPengiriman')->nullable()->constrained('pengirimans', 'idPengiriman')->onDelete('set null');
             $table->dateTime('tanggalPesanan');
             $table->enum('status', ['pending', 'diproses', 'selesai', 'dibatalkan']);
-            $table->decimal('jumlahTotal', 10, 2);
+            $table->decimal('jumlahTotal', 10, 2)->nullable();
             $table->enum('tipePesanan', ['takeaway', 'delivery'])->default('takeaway');
             $table->timestamps();
         });
