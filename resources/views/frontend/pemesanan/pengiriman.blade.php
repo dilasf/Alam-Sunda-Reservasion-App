@@ -26,7 +26,10 @@
 
                                 <!-- Alamat -->
                                 <div>
-                                    <label for="alamat" class="block text-white mb-2">Alamat Pengiriman</label>
+                                    <label for="alamat" class="block text-white mb-1">Alamat Pengiriman</label>
+                                    <p class="text-gray-400 text-sm mb-2">
+                                        Alamat Pengiriman Hanya Berlaku Di Wilayah Kota Bogor
+                                    </p>
                                     <textarea id="alamat" name="alamat" rows="3"
                                         class="w-full p-3 bg-[#1A1A1C] border border-gray-700 text-white rounded-md focus:outline-none focus:border-[#FFE077] transition-colors"
                                         required>{{ old('alamat') }}</textarea>
@@ -58,6 +61,23 @@
                                     @enderror
                                 </div>
 
+                                <!-- Waktu Pengiriman -->
+                                <div>
+                                    <label for="waktuPengiriman" class="block text-white mb-2">Waktu Pengiriman</label>
+                                    <input type="datetime-local" id="waktuPengiriman" name="waktuPengiriman"
+                                        value="{{ old('waktuPengiriman', now()->addHour()->format('Y-m-d\TH:i')) }}"
+                                        min="{{ now()->format('Y-m-d\TH:i') }}"
+                                        max="{{ now()->addDays(7)->format('Y-m-d\TH:i') }}"
+                                        class="w-full p-3 bg-[#1A1A1C] border border-gray-700 text-white rounded-md focus:outline-none focus:border-[#FFE077] transition-colors"
+                                        required>
+                                    <p class="text-gray-400 text-sm mt-1">
+                                        Waktu pengiriman tersedia antara jam 09:00 - 21:00 WIB (minimal 1 jam dari waktu
+                                        pemesanan)
+                                    </p>
+                                    @error('waktuPengiriman')
+                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
                                 <!-- Biaya Pengiriman -->
                                 <div>
                                     <label class="block text-white mb-2">Biaya Pengiriman</label>

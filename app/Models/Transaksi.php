@@ -36,6 +36,11 @@ class Transaksi extends Model
         return $this->belongsTo(Pesanan::class, 'idPesanan', 'idPesanan');
     }
 
+    public function laporan()
+    {
+        return $this->hasOne(Laporan::class, 'idTransaksi');
+    }
+
     // Method untuk cek status
     public function isPending()
     {

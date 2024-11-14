@@ -18,13 +18,16 @@ class Pengiriman extends Model
         'catatan',
         'nomorTelepon',
         'biayaPengiriman',
-        'status'
+        'status',
+        'waktuPengiriman'
     ];
 
     protected $attributes = [
-        'biayaPengiriman' => 150000,
+        'biayaPengiriman' => 100000,
         'status' => 'pending'
     ];
+
+    protected $dates = ['waktuPengiriman'];
 
     public function pesanan()
     {

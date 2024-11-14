@@ -27,7 +27,8 @@
                         <div class="grid grid-cols-2 gap-2">
                             <p><span class="font-medium">Tanggal Reservasi:</span></p>
                             <p class="text-right">
-                                {{ \Carbon\Carbon::parse($reservasi->tanggal)->format('d M Y H:i') }}
+                                {{ \Carbon\Carbon::parse($reservasi->tanggal)->format('d M Y H:i') }} -
+                                {{ \Carbon\Carbon::parse($reservasi->tanggal)->addHours(2)->format('H:i') }}
                             </p>
                             <p><span class="font-medium">Jumlah Pengunjung:</span></p>
                             <p class="text-right">{{ $reservasi->jumlahPengunjung }}</p>
@@ -80,7 +81,7 @@
                     style="background-image: url('{{ asset('src/images/cover/form-pattern.png') }}')">
                     <h1 class="text-4xl mb-6 text-white">Hubungi Kami</h1>
                     <p class="text-lg mb-4 text-white">
-                        Permintaan Reservasi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
+                        Butuh Bantuan? Hubungi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
                     </p>
                     <div class="border-t border-gray-700 my-4"></div>
                     <p class="text-md mb-4 text-white">

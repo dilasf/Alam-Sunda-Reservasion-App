@@ -10,6 +10,8 @@ use App\Models\Pengiriman;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -51,66 +53,80 @@ class FrontendPemesananController extends Controller
     }
 
     public function processPesanan(Request $request)
-    {
-        $request->validate([
-            'items' => 'required|array',
-            'items.*.menu_id' => 'required|exists:menus,idMenu',
-            'items.*.jumlah' => 'required|integer|min:1',
-            'tipePesanan' => 'required|in:takeaway,delivery'
-        ]);
+{
+    $request->validate([
+        'items' => 'required|array',
+        'items.*.menu_id' => 'required|exists:menus,idMenu',
+        'items.*.jumlah' => 'required|integer|min:1',
+        'tipePesanan' => 'required|in:takeaway,delivery'
+    ]);
 
-        try {
-            DB::beginTransaction();
+    try {
+        // Cek waktu pemesanan untuk takeaway
+        if ($request->tipePesanan === 'takeaway') {
+            $now = now()->setTimezone('Asia/Jakarta');
+            $openTime = now()->setTimezone('Asia/Jakarta')->setTime(9, 0, 0);
+            $closeTime = now()->setTimezone('Asia/Jakarta')->setTime(19, 0, 0);
 
-            // Create base pesanan
-            $pesanan = new Pesanan();
-            $pesanan->idUser = Auth::id();
-            $pesanan->status = 'pending';
-            $pesanan->tipePesanan = $request->tipePesanan;
-            $pesanan->tanggalPesanan = now();
-            $pesanan->save();
-
-            $totalHarga = 0;
-
-            foreach ($request->items as $item) {
-                $menu = Menu::findOrFail($item['menu_id']);
-                $subtotal = $menu->harga * $item['jumlah'];
-                $totalHarga += $subtotal;
-
-                ItemPesanan::create([
-                    'idPesanan' => $pesanan->idPesanan,
-                    'idMenus' => $item['menu_id'],
-                    'jumlah' => $item['jumlah'],
-                    'harga' => $menu->harga,
-                    'subtotal' => $subtotal
-                ]);
-            }
-
-            $pesanan->jumlahTotal = $totalHarga;
-            $pesanan->save();
-
-            DB::commit();
-
-            if ($request->tipePesanan === 'delivery') {
+            if ($now->lt($openTime) || $now->gt($closeTime)) {
                 return response()->json([
-                    'status' => 'success',
-                    'redirect' => route('frontend.pemesanan.pengiriman', ['idPesanan' => $pesanan->idPesanan])
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'redirect' => route('frontend.pemesanan.upload', ['idPesanan' => $pesanan->idPesanan])
-                ]);
+                    'status' => 'error',
+                    'message' => 'Maaf, pesanan takeaway hanya dapat dilakukan antara jam 9 pagi - 7 malam WIB. Silahkan order kembali besok pada jam operasional.'
+                ], 422);
             }
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-            ], 500);
         }
+
+        DB::beginTransaction();
+
+        // Create base pesanan
+        $pesanan = new Pesanan();
+        $pesanan->idUser = Auth::id();
+        $pesanan->status = 'pending';
+        $pesanan->tipePesanan = $request->tipePesanan;
+        $pesanan->tanggalPesanan = now();
+        $pesanan->save();
+
+        $totalHarga = 0;
+
+        foreach ($request->items as $item) {
+            $menu = Menu::findOrFail($item['menu_id']);
+            $subtotal = $menu->harga * $item['jumlah'];
+            $totalHarga += $subtotal;
+
+            ItemPesanan::create([
+                'idPesanan' => $pesanan->idPesanan,
+                'idMenus' => $item['menu_id'],
+                'jumlah' => $item['jumlah'],
+                'harga' => $menu->harga,
+                'subtotal' => $subtotal
+            ]);
+        }
+
+        $pesanan->jumlahTotal = $totalHarga;
+        $pesanan->save();
+
+        DB::commit();
+
+        if ($request->tipePesanan === 'delivery') {
+            return response()->json([
+                'status' => 'success',
+                'redirect' => route('frontend.pemesanan.pengiriman', ['idPesanan' => $pesanan->idPesanan])
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'success',
+                'redirect' => route('frontend.pemesanan.upload', ['idPesanan' => $pesanan->idPesanan])
+            ]);
+        }
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+        ], 500);
     }
+}
 
     public function showPengirimanForm($idPesanan)
 {
@@ -125,43 +141,107 @@ class FrontendPemesananController extends Controller
 }
 
 public function storePengiriman(Request $request, $idPesanan)
-{
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'alamat' => 'required|string',
-        'catatan' => 'nullable|string',
-        'nomorTelepon' => 'required|string|max:14'
-    ]);
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'catatan' => 'nullable|string',
+            'nomorTelepon' => 'required|string|max:14',
+            'waktuPengiriman' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    try {
+                        // Parse input dan set timezone dengan benar
+                        $tanggalPengiriman = Carbon::parse($value)->setTimezone('Asia/Jakarta');
+                        $now = Carbon::now()->setTimezone('Asia/Jakarta');
+                        $maxDate = $now->copy()->addDays(7);
 
-    try {
-        DB::beginTransaction();
+                        // Debug log untuk melihat waktu yang dipilih
+                        Log::info('Waktu Pengiriman:', [
+                            'input_value' => $value,
+                            'parsed_date' => $tanggalPengiriman->format('Y-m-d H:i:s'),
+                            'hour' => $tanggalPengiriman->hour,
+                        ]);
 
-        $pesanan = Pesanan::findOrFail($idPesanan);
+                        // 1. Validasi rentang tanggal
+                        if ($tanggalPengiriman->startOfDay()->lt($now->startOfDay()) ||
+                            $tanggalPengiriman->startOfDay()->gt($maxDate->startOfDay())) {
+                            $fail('Tanggal pengiriman harus antara hari ini dan 7 hari ke depan.');
+                            return;
+                        }
 
-        if ($pesanan->idUser !== Auth::id()) {
-            throw new \Exception('Unauthorized action.');
-        }
+                        // Reset tanggalPengiriman karena startOfDay() mengubah waktunya
+                        $tanggalPengiriman = Carbon::parse($value)->setTimezone('Asia/Jakarta');
 
-        $pengiriman = Pengiriman::create([
-            'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'catatan' => $request->catatan,
-            'nomorTelepon' => $request->nomorTelepon
+                        // 2. Validasi jam operasional (09:00 - 21:00)
+                        $hour = (int) $tanggalPengiriman->format('H');
+
+                        Log::info('Validasi Jam:', [
+                            'jam' => $hour,
+                            'is_before_nine' => $hour < 9,
+                            'is_after_twentyone' => $hour >= 21,
+                        ]);
+
+                        if ($hour < 9 || $hour >= 21) {
+                            $fail('Waktu pengiriman harus antara jam 09:00 - 21:00.');
+                            return;
+                        }
+
+                        // 3. Validasi minimal 1 jam dari sekarang untuk pesanan hari ini
+                        if ($tanggalPengiriman->isSameDay($now)) {
+                            $diffInMinutes = $tanggalPengiriman->diffInMinutes($now);
+                            if ($diffInMinutes < 60) {
+                                $fail('Waktu pengiriman harus minimal 1 jam dari waktu pemesanan.');
+                                return;
+                            }
+                        }
+
+                    } catch (\Exception $e) {
+                        Log::error('Error in waktuPengiriman validation:', [
+                            'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString()
+                        ]);
+                        $fail('Format waktu pengiriman tidak valid.');
+                    }
+                },
+            ]
         ]);
 
-        $pesanan->idPengiriman = $pengiriman->idPengiriman;
-        $pesanan->jumlahTotal = $pesanan->calculateTotal();
-        $pesanan->save();
+        try {
+            DB::beginTransaction();
 
-        DB::commit();
+            $pesanan = Pesanan::findOrFail($idPesanan);
 
-        return redirect()->route('frontend.pemesanan.upload', ['idPesanan' => $idPesanan])
-                    ->with('success', 'Data pengiriman berhasil disimpan');
+            if ($pesanan->idUser !== Auth::id()) {
+                throw new \Exception('Unauthorized action.');
+            }
 
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-    }
+            $pengiriman = Pengiriman::create([
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'catatan' => $request->catatan,
+                'nomorTelepon' => $request->nomorTelepon,
+                'waktuPengiriman' => Carbon::parse($request->waktuPengiriman)->setTimezone('Asia/Jakarta')
+            ]);
+
+            $pesanan->idPengiriman = $pengiriman->idPengiriman;
+            $pesanan->jumlahTotal = $pesanan->calculateTotal();
+            $pesanan->save();
+
+            DB::commit();
+
+            return redirect()->route('frontend.pemesanan.upload', ['idPesanan' => $idPesanan])
+                        ->with('success', 'Data pengiriman berhasil disimpan');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error in storePengiriman:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
     public function showUploadForm($idPesanan)
     {
@@ -182,11 +262,15 @@ public function storePengiriman(Request $request, $idPesanan)
         return view('frontend.pemesanan.upload', compact('pesanan'));
     }
 
-    public function storeTransaksi(Request $request, $idPesanan)
-    {
+    public function storeTransaksi(Request $request, $idPesanan) {
         $request->validate([
             'fotoBukti' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'totalDibayar' => 'required|numeric|min:0'
+        ], [
+            'fotoBukti.required' => 'File bukti pembayaran harus diupload',
+            'fotoBukti.image' => 'File harus berupa gambar',
+            'fotoBukti.mimes' => 'Format file harus JPG, JPEG, atau PNG',
+            'fotoBukti.max' => 'Ukuran file maksimal 2MB'
         ]);
 
         try {
@@ -199,44 +283,49 @@ public function storePengiriman(Request $request, $idPesanan)
             }
 
             // Handle file upload
-            $fotoBukti = null;
+            $path = null;
             if ($request->hasFile('fotoBukti')) {
                 $file = $request->file('fotoBukti');
-                $fotoBukti = time() . '_' . $file->getClientOriginalName();
-                $file->storeAs('public/bukti_pembayaran', $fotoBukti);
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                // Store file in storage/app/public/bukti-pembayaran
+                $path = $file->storeAs('bukti-pembayaran', $fileName, 'public');
             }
 
-            // Buat array data transaksi
+            // Create transaction data
             $transaksiData = [
                 'idPesanan' => $idPesanan,
-                'fotoBukti' => $fotoBukti,
+                'fotoBukti' => $path, // Simpan full path
                 'tanggal' => now(),
                 'totalPembayaran' => $pesanan->jumlahTotal,
                 'totalDibayar' => $request->totalDibayar,
                 'status' => Transaksi::STATUS_DIBAYAR
             ];
 
-            // Debug log
+            // Log transaction data for debugging
             Log::info('Creating transaction with data:', $transaksiData);
 
-            // Create transaction
+            // Create transaction record
             $transaksi = Transaksi::create($transaksiData);
 
-            // Update pesanan status menggunakan update() untuk memastikan nilai string
-            $pesanan->update(['status' => 'diproses']); // Menggunakan string literal
+            // Update order status
+            $pesanan->update(['status' => 'diproses']);
 
             DB::commit();
 
-            return redirect()->route('frontend.pemesanan.status', ['idPesanan' => $idPesanan])
-                        ->with('success', 'Bukti pembayaran berhasil diunggah');
+            return redirect()
+                ->route('frontend.pemesanan.status', ['idPesanan' => $idPesanan])
+                ->with('success', 'Bukti pembayaran berhasil diunggah');
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            if (isset($fotoBukti)) {
-                Storage::delete('public/bukti_pembayaran/' . $fotoBukti);
+            // Delete uploaded file if exists
+            if (isset($path)) {
+                Storage::disk('public')->delete($path);
             }
 
+            // Log the error
             Log::error('Transaction creation failed:', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nomorTelepon', 14);
             $table->decimal('biayaPengiriman', 10, 2);
             $table->enum('status', ['pending', 'dikirim', 'selesai', 'dibatalkan']);
+            $table->dateTime('waktuPengiriman');
             $table->timestamps();
         });
     }

@@ -1,5 +1,20 @@
 <x-admin-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-title-md2 font-bold text-black dark:text-white">
+                Meja
+            </h2>
+
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li class="font-medium">
+                        Admin /
+                        {{-- <a class="font-medium" href="index.html">Menu /</a> --}}
+                    </li>
+                    <li class="text-primary">Meja</li>
+                </ol>
+            </nav>
+        </div>
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
                 role="alert">

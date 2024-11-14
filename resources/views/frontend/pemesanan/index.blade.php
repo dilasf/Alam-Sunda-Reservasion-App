@@ -6,7 +6,7 @@
                 <div class="lg:col-span-2">
                     <div class="bg-[#0D0D0B] rounded-lg shadow-lg">
                         <div class="border-b border-gray-700 p-4">
-                            <h2 class="text-2xl font-semibold text-white">Menu List</h2>
+                            <h2 class="text-2xl font-semibold text-white">Daftar Menu</h2>
                         </div>
                         <div class="p-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -31,8 +31,8 @@
                                                     'nama' => $menu->nama,
                                                     'harga' => $menu->harga,
                                                 ]) }}">
-                                                <span class="btn-text">Add to Order</span>
-                                                <span class="btn-loading hidden">Adding...</span>
+                                                <span class="btn-text">Tambah</span>
+                                                <span class="btn-loading hidden">Menammbah</span>
                                             </button>
                                         </div>
                                     </div>
@@ -46,18 +46,18 @@
                 <div class="lg:col-span-1">
                     <div class="bg-[#0D0D0B] rounded-lg shadow-lg sticky top-6">
                         <div class="border-b border-gray-700 p-4">
-                            <h2 class="text-2xl font-semibold text-white">Your Order</h2>
+                            <h2 class="text-2xl font-semibold text-white">Pesananmu</h2>
                         </div>
                         <div class="p-6">
                             <form id="orderForm" class="space-y-6">
                                 <div id="orderItems" class="space-y-4 max-h-[60vh] overflow-y-auto"></div>
 
                                 <div id="emptyOrderMessage" class="text-gray-400 text-center py-4">
-                                    No items in order
+                                    Tidak Ada Pesanan
                                 </div>
 
                                 <div class="space-y-2">
-                                    <label class="block text-white">Order Type</label>
+                                    <label class="block text-white">Tipe Order</label>
                                     <select name="orderType" required
                                         class="w-full p-3 bg-[#1A1A1C] border border-gray-700 text-white rounded-md focus:outline-none focus:border-[#FFE077] transition-colors">
                                         <option value="takeaway">Take Away</option>
@@ -74,8 +74,8 @@
 
                                 <button type="submit"
                                     class="w-full bg-[#FFE077] text-black font-semibold py-3 px-4 rounded-md hover:bg-[#b69b41] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <span class="btn-text">Create Order</span>
-                                    <span class="btn-loading hidden">Processing...</span>
+                                    <span class="btn-text">Buat Pesanan</span>
+                                    <span class="btn-loading hidden">Proses...</span>
                                 </button>
                             </form>
                         </div>

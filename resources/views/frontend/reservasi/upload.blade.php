@@ -1,14 +1,14 @@
 <x-guest-layout>
     <!-- Main Hero Content -->
-    <section class="pt-12 pb-12 bg-gradient-to-r from-[#1f1f22] to-[#151518] font-['Inter',sans-serif]">
+    <section class="min-h-screen pt-12 pb-12 bg-gradient-to-r from-[#1f1f22] to-[#151518] font-['Inter',sans-serif]">
         <div class="container mx-auto p-6 sm:p-12 md:w-3/4">
             <div class="grid grid-cols-1 md:grid-cols-3">
                 <!-- Reservasi Online (Bagian Kiri) -->
                 <div class="md:col-span-2 bg-[#0D0D0B] shadow-lg p-8">
                     <h1 class="text-6xl mb-4 text-white text-center">Reservasi Online</h1>
-                    <p class="text-sm mb-6 text-white text-center">
-                        Permintaan Reservasi <span class="text-[#E0C48B]">+62 812-2397-8735</span> atau isi Form ini
-                    </p>
+                    {{-- <p class="text-sm mb-6 text-white text-center">
+                        Butuh bantuan? <span class="text-[#E0C48B]">+62 812-2397-8735</span>
+                    </p> --}}
 
                     {{-- Tampilkan informasi transaksi --}}
                     <div class="mb-6 text-white">
@@ -86,7 +86,7 @@
                     style="background-image: url('{{ asset('src/images/cover/form-pattern.png') }}')">
                     <h1 class="text-4xl mb-6 text-white">Hubungi Kami</h1>
                     <p class="text-lg mb-4 text-white">
-                        Permintaan Reservasi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
+                        Butuh Bantuan? Hubungi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
                     </p>
                     <div class="border-t border-gray-700 my-4"></div>
                     <p class="text-md mb-4 text-white">

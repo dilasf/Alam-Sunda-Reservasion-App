@@ -1,12 +1,28 @@
 <x-admin-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-title-md2 font-bold text-black dark:text-white">
+                {{-- Menu --}}
+            </h2>
+
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li>
+                        {{-- Admin / --}}
+                        <a class="font-medium" href="{{ route('admin.reservasi.index') }}">Reservasi /</a>
+                    </li>
+                    <li class="text-primary">Edit</li>
+                </ol>
+            </nav>
+        </div>
         <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div class="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
                 <h3 class="font-medium text-black dark:text-white">
                     Edit Reservasi
                 </h3>
             </div>
-            <form action="{{ route('admin.reservasi.update', $reservasi) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.reservasi.update', $reservasi) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="flex flex-col gap-5.5 p-6.5">

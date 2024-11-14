@@ -33,7 +33,7 @@
             </a>
         </div>
         <div class="hidden sm:block">
-            <form action="https://formbold.com/s/unique_form_id" method="POST">
+            {{-- <form action="https://formbold.com/s/unique_form_id" method="POST">
                 <div class="relative">
                     <button class="absolute left-0 top-1/2 -translate-y-1/2">
                         <svg class="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary"
@@ -51,12 +51,12 @@
                     <input type="text" placeholder="Type to search..."
                         class="w-full bg-transparent pl-9 pr-4 focus:outline-none xl:w-125" />
                 </div>
-            </form>
+            </form> --}}
         </div>
 
         <div class="flex items-center gap-3 2xsm:gap-7">
             <ul class="flex items-center gap-2 2xsm:gap-4">
-                <li>
+                {{-- <li>
                     <!-- Dark Mode Toggler -->
                     <label :class="darkMode ? 'bg-primary' : 'bg-stroke'"
                         class="relative m-0 block h-7.5 w-14 rounded-full">
@@ -86,13 +86,24 @@
                         </span>
                     </label>
                     <!-- Dark Mode Toggler -->
-                </li>
+                </li> --}}
 
                 <!-- Notification Menu Area -->
-                <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
+                {{-- <li class="relative" x-data="{
+                    dropdownOpen: false,
+                    notifications: [],
+                    unreadCount: 0,
+                    async fetchNotifications() {
+                        const response = await fetch('/admin/notifications/unread');
+                        this.notifications = await response.json();
+                        this.unreadCount = this.notifications.length;
+                    }
+                }" @click.outside="dropdownOpen = false"
+                    x-init="fetchNotifications();
+                    setInterval(() => fetchNotifications(), 30000)">
                     <a class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
-                        href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
-                        <span :class="!notifying && 'hidden'"
+                        href="#" @click.prevent="dropdownOpen = ! dropdownOpen">
+                        <span x-show="unreadCount > 0"
                             class="absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1">
                             <span
                                 class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
@@ -110,61 +121,32 @@
                     <div x-show="dropdownOpen"
                         class="absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80">
                         <div class="px-4.5 py-3">
-                            <h5 class="text-sm font-medium text-bodydark2">Notification</h5>
+                            <h5 class="text-sm font-medium text-bodydark2">Notifikasi</h5>
                         </div>
 
                         <ul class="flex h-auto flex-col overflow-y-auto">
-                            <li>
-                                <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                                    href="#">
-                                    <p class="text-sm">
-                                        <span class="text-black dark:text-white">Edit your information in a swipe</span>
-                                        Sint occaecat cupidatat non proident, sunt in culpa qui
-                                        officia deserunt mollit anim.
-                                    </p>
-
-                                    <p class="text-xs">12 May, 2025</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                                    href="#">
-                                    <p class="text-sm">
-                                        <span class="text-black dark:text-white">It is a long established fact</span>
-                                        that a reader will be distracted by the readable.
-                                    </p>
-
-                                    <p class="text-xs">24 Feb, 2025</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                                    href="#">
-                                    <p class="text-sm">
-                                        <span class="text-black dark:text-white">There are many variations</span>
-                                        of passages of Lorem Ipsum available, but the majority have
-                                        suffered
-                                    </p>
-
-                                    <p class="text-xs">04 Jan, 2025</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                                    href="#">
-                                    <p class="text-sm">
-                                        <span class="text-black dark:text-white">There are many variations</span>
-                                        of passages of Lorem Ipsum available, but the majority have
-                                        suffered
-                                    </p>
-
-                                    <p class="text-xs">01 Dec, 2024</p>
-                                </a>
+                            <template x-for="notification in notifications" :key="notification.id">
+                                <li>
+                                    <a :href="`/admin/notifications/${notification.id}/mark-as-read`"
+                                        class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4">
+                                        <p class="text-sm">
+                                            <span class="text-black dark:text-white" x-text="notification.title"></span>
+                                            <span x-text="notification.message"></span>
+                                        </p>
+                                        <p class="text-xs"
+                                            x-text="new Date(notification.created_at).toLocaleDateString()"></p>
+                                    </a>
+                                </li>
+                            </template>
+                            <li x-show="notifications.length === 0">
+                                <div class="px-4.5 py-3 text-sm text-gray-500">
+                                    Tidak ada notifikasi baru
+                                </div>
                             </li>
                         </ul>
                     </div>
                     <!-- Dropdown End -->
-                </li>
+                </li> --}}
                 <!-- Notification Menu Area -->
 
                 <!-- Chat Notification Area -->
@@ -191,7 +173,7 @@
                 <!-- Dropdown Start -->
                 <div x-show="dropdownOpen"
                     class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <ul class="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
+                    {{-- <ul class="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
                         <li>
                             <a href="profile.html"
                                 class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
@@ -234,7 +216,7 @@
                                 Account Settings
                             </a>
                         </li>
-                    </ul>
+                    </ul> --}}
                     <button
                         class="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"

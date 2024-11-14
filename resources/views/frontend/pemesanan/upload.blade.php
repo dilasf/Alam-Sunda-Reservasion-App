@@ -53,13 +53,13 @@
                                 <input type="file" name="fotoBukti" id="fotoBukti"
                                     accept="image/jpeg,image/png,image/jpg"
                                     class="p-3 w-full bg-[#1A1A1C] border border-gray-700 text-white
-                                              file:mr-4 file:py-2 file:px-4
-                                              file:rounded-none file:border-0
-                                              file:text-sm file:bg-[#FFE077]
-                                              file:text-black hover:file:bg-[#b69b41]
-                                              file:cursor-pointer focus:outline-none
-                                              focus:border-[#FFE077] transition-colors
-                                              @error('fotoBukti') border-red-500 @enderror"
+                                            file:mr-4 file:py-2 file:px-4
+                                            file:rounded-none file:border-0
+                                            file:text-sm file:bg-[#FFE077]
+                                            file:text-black hover:file:bg-[#b69b41]
+                                            file:cursor-pointer focus:outline-none
+                                            focus:border-[#FFE077] transition-colors
+                                            @error('fotoBukti') border-red-500 @enderror"
                                     required>
                             </div>
                             <p class="text-gray-400 text-xs">Format yang diperbolehkan: JPG, JPEG, PNG (Max: 2MB)</p>
@@ -71,10 +71,10 @@
                         <div class="flex flex-col space-y-2">
                             <label for="totalDibayar" class="text-white text-sm mb-1">Jumlah yang Dibayar</label>
                             <input type="number" name="totalDibayar" id="totalDibayar"
-                                value="{{ $pesanan->jumlahTotal }}"
+                                value="{{ $pesanan->jumlahTotal }}" min="0"
                                 class="p-3 w-full bg-[#1A1A1C] border border-gray-700 text-white
-                                          focus:outline-none focus:border-[#FFE077] transition-colors
-                                          @error('totalDibayar') border-red-500 @enderror"
+                                        focus:outline-none focus:border-[#FFE077] transition-colors
+                                        @error('totalDibayar') border-red-500 @enderror"
                                 required>
                             @error('totalDibayar')
                                 <div class="text-red-500 text-sm">{{ $message }}</div>
@@ -83,8 +83,8 @@
 
                         <button type="submit" id="submitButton"
                             class="w-full p-3 bg-[#FFE077] text-black font-bold
-                                       hover:bg-[#b69b41] transition-colors
-                                       disabled:opacity-50 disabled:cursor-not-allowed">
+                                    hover:bg-[#b69b41] transition-colors
+                                    disabled:opacity-50 disabled:cursor-not-allowed">
                             <span class="inline-block">UPLOAD BUKTI PEMBAYARAN</span>
                             <span class="hidden" id="loadingText">
                                 <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black inline-block"
@@ -113,7 +113,13 @@
                                 <p class="text-[#FFE077]">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
                             </div>
                         @endforeach
-                        <div class="pt-4">
+                        @if ($pesanan->tipePesanan === 'delivery' && $pesanan->pengiriman)
+                            <div class="border-b border-gray-700 pb-4">
+                                <p class="text-white">Biaya Pengiriman</p>
+                                <p class="text-[#FFE077]">Rp 150.000</p>
+                            </div>
+                        @endif
+                        <div class="pt-1">
                             <p class="text-white text-lg font-bold">Total</p>
                             <p class="text-[#FFE077] text-xl">Rp
                                 {{ number_format($pesanan->jumlahTotal, 0, ',', '.') }}</p>
@@ -144,11 +150,28 @@
                             imagePreview.classList.remove('hidden');
                         }
                         reader.readAsDataURL(this.files[0]);
+
+                        // Validate file size
+                        const fileSize = this.files[0].size / 1024 / 1024; // Convert to MB
+                        if (fileSize > 2) {
+                            alert('Ukuran file tidak boleh lebih dari 2MB');
+                            this.value = '';
+                            imagePreview.classList.add('hidden');
+                        }
                     }
                 });
 
                 // Handle form submission
-                form.addEventListener('submit', function() {
+                form.addEventListener('submit', function(e) {
+                    const totalDibayar = document.getElementById('totalDibayar');
+                    const jumlahTotal = {{ $pesanan->jumlahTotal }};
+
+                    if (parseFloat(totalDibayar.value) < 0) {
+                        e.preventDefault();
+                        alert('Jumlah yang dibayar tidak boleh kurang dari 0');
+                        return;
+                    }
+
                     submitButton.disabled = true;
                     normalText.classList.add('hidden');
                     loadingText.classList.remove('hidden');

@@ -27,6 +27,10 @@
                                     {{ ucfirst($pesanan->status) }}
                                 </span>
                             </p>
+                            @if ($pesanan->tipePesanan === 'takeaway' && $pesanan->pengiriman)
+                                <p><span class="font-medium">Keterangan:</span></p>
+                                <p class="text-right">Silahkan Ambil Pesananmu Di Alam Sunda Cabang Cipayung Bogor</p>
+                            @endif
                         </div>
                     </div>
 
@@ -40,11 +44,13 @@
                                 <p class="text-right">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
                             </div>
                         @endforeach
-                        <div class="grid grid-cols-4 gap-2 mb-2">
-                            <p class="col-span-2">Biaya Pengiriman</p>
-                            <p class="text-center"></p>
-                            <p class="text-right">Rp 150.000</p>
-                        </div>
+                        @if ($pesanan->tipePesanan === 'delivery' && $pesanan->pengiriman)
+                            <div class="grid grid-cols-4 gap-2 mb-2">
+                                <p class="col-span-2">Biaya Pengiriman</p>
+                                <p class="text-center"></p>
+                                <p class="text-right">Rp 150.000</p>
+                            </div>
+                        @endif
                         <div class="mt-2 pt-2 border-t border-gray-700">
                             <div class="grid grid-cols-2">
                                 <p class="font-medium">Total:</p>
@@ -60,10 +66,23 @@
                             <div class="grid grid-cols-2 gap-2">
                                 <p><span class="font-medium">Nama Penerima:</span></p>
                                 <p class="text-right">{{ $pesanan->pengiriman->nama }}</p>
+
                                 <p><span class="font-medium">No. Telepon:</span></p>
                                 <p class="text-right">{{ $pesanan->pengiriman->nomorTelepon }}</p>
+
                                 <p><span class="font-medium">Alamat:</span></p>
                                 <p class="text-right">{{ $pesanan->pengiriman->alamat }}</p>
+
+                                <p><span class="font-medium">Tanggal Pengiriman:</span></p>
+                                <p class="text-right">
+                                    {{ \Carbon\Carbon::parse($pesanan->pengiriman->waktuPengiriman)->format('d/m/Y') }}
+                                </p>
+
+                                <p><span class="font-medium">Waktu Pengiriman:</span></p>
+                                <p class="text-right">
+                                    {{ \Carbon\Carbon::parse($pesanan->pengiriman->waktuPengiriman)->format('H:i') }}
+                                    WIB</p>
+
                                 @if ($pesanan->pengiriman->catatan)
                                     <p><span class="font-medium">Catatan:</span></p>
                                     <p class="text-right">{{ $pesanan->pengiriman->catatan }}</p>
@@ -111,7 +130,7 @@
                     style="background-image: url('{{ asset('src/images/cover/form-pattern.png') }}')">
                     <h1 class="text-4xl mb-6 text-white">Hubungi Kami</h1>
                     <p class="text-lg mb-4 text-white">
-                        Permintaan Reservasi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
+                        Butuh Bantuan? Hubungi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
                     </p>
                     <div class="border-t border-gray-700 my-4"></div>
                     <p class="text-md mb-4 text-white">

@@ -22,15 +22,15 @@ class Pelanggan
 
         //admin
         $userRole = Auth::user()->role;
-        if($userRole == 1){
+        if($userRole === 1){
             return redirect()->route(route: 'admin.dashboard.index');
         }
         //owner
-        elseif($userRole == 2){
-            return redirect()->route('owner.dashboard');
+        elseif($userRole === 2){
+            return redirect()->route('owner.dashboard.index');
         //pelanggan
         }
-        elseif($userRole == 3){
+        elseif($userRole === 3){
             return $next($request);
         }
     }

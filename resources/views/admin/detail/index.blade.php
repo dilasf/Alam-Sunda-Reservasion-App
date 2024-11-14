@@ -1,5 +1,20 @@
 <x-admin-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-title-md2 font-bold text-black dark:text-white">
+                Detail Menu
+            </h2>
+
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li class="font-medium">
+                        Admin /
+                        {{-- <a class="font-medium" href="index.html">Menu /</a> --}}
+                    </li>
+                    <li class="text-primary">Detail Menu</li>
+                </ol>
+            </nav>
+        </div>
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
                 role="alert">
@@ -15,7 +30,7 @@
         <div class="mb-4 flex flex-wrap gap-5 xl:gap-20">
             <a href="{{ route('admin.detail.create') }}"
                 class="inline-flex items-center justify-center rounded-md bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 transition duration-300">
-                Tambah Menu
+                Tambah Detail Menu
             </a>
         </div>
         <div

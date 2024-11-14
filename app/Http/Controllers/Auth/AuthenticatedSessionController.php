@@ -29,16 +29,17 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $loggedInUserRole = $request->user()->role;
 
+
         //admin
-        if ($loggedInUserRole == '1'){
-            return redirect()->intended(route('admin.dashboard.index', absolute: false));
+        if ($loggedInUserRole == 1){
+            return redirect()->route('admin.dashboard.index');
         //owner
-        } elseif($loggedInUserRole == '2'){
-            return redirect()->intended(route('owner.dashboard', absolute: false));
+        } elseif($loggedInUserRole == 2){
+            return redirect()->route('owner.dashboard.index');
         }
         //pelanggan
-        elseif($loggedInUserRole == '3'){
-            return redirect()->intended(route('frontend.reservasi.dashboard', absolute: false));
+        elseif($loggedInUserRole == 3){
+            return redirect()->route('frontend.reservasi.dashboard');
         }
 
         return redirect()->intended(route('dashboard', absolute: false));

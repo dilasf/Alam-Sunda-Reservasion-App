@@ -2,18 +2,21 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DetailMenuController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\MejaController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\PesananController;
 use App\Http\Controllers\Admin\ReservasiController;
 use App\Http\Controllers\Admin\TransaksiController;
 use App\Http\Controllers\Frontend\FrontendPemesananController;
 use App\Http\Controllers\Frontend\FrontendReservasiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get("/",[WelcomeController::class,"index"])->name("home");
+
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -51,8 +54,8 @@ Route::middleware(['auth', 'verified', 'pelanggan'])
         Route::get('/{idPesanan}/pengiriman', [FrontendPemesananController::class, 'showPengirimanForm'])->name('pengiriman');
         Route::post('/{idPesanan}/pengiriman', [FrontendPemesananController::class, 'storePengiriman'])->name('pengiriman.store');
         Route::get('/pemesanan/{idPesanan}/upload', [FrontendPemesananController::class, 'showUploadForm'])->name('upload');
-Route::post('/pemesanan/{idPesanan}/transaksi', [FrontendPemesananController::class, 'storeTransaksi'])->name('transaksi.store');
-Route::get('/pemesanan/{idPesanan}/status', [FrontendPemesananController::class, 'showTransactionStatus'])->name('status');
+        Route::post('/pemesanan/{idPesanan}/transaksi', [FrontendPemesananController::class, 'storeTransaksi'])->name('transaksi.store');
+        Route::get('/pemesanan/{idPesanan}/status', [FrontendPemesananController::class, 'showTransactionStatus'])->name('status');
 });
 // Route::prefix('reservasi')->name('frontend.reservasi.')->group(function () {
 //     Route::get('/dashboard', [FrontendReservasiController::class, 'createReservasi'])->name('create');
@@ -62,9 +65,9 @@ Route::get('/pemesanan/{idPesanan}/status', [FrontendPemesananController::class,
 //     Route::get('/success', [FrontendReservasiController::class, 'success'])->name('success');
 // });
 //owner
-Route::get('/owner/dashboard', function () {
-    return view('owner.dashboard');
-})->middleware(['auth', 'verified', 'owner'])->name('owner.dashboard');
+// Route::get('/owner/dashboard', function () {
+//     return view('owner.dashboard');
+// })->middleware(['auth', 'verified', 'owner'])->name('owner.dashboard');
 
 
 
@@ -79,7 +82,53 @@ Route::middleware(['auth','verified','admin'])->name('admin.')->prefix('admin')-
     Route::get('/reservasi/{reservasi}/detail', [ReservasiController::class, 'detail'])
         ->name('reservasi.detail');
     Route::resource('/transaksi', TransaksiController::class);
+    Route::resource('/pesanan', PesananController::class);
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/generate', [LaporanController::class, 'generate'])->name('laporan.generate');
+    Route::get('/admin/notifications/unread', [NotificationController::class, 'getUnreadNotifications']);
+    Route::get('/admin/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
+    Route::post('/admin/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
 });
+
+Route::middleware(['auth','verified','owner'])->name('owner.')->prefix('owner')->group(function(){
+    Route::get('/dashboard',[AdminController::class, 'index'])->name('dashboard.index');
+    // Route::resource('/detail', DetailMenuController::class)->parameters([
+    //     'detail' => 'detailMenu'
+    // ]);
+    // Route::resource('/menu', MenuController::class);
+    // Route::resource('/meja', MejaController::class);
+    // Route::resource('/reservasi', ReservasiController::class);
+    // Route::get('/reservasi/{reservasi}/detail', [ReservasiController::class, 'detail'])
+    //     ->name('reservasi.detail');
+    // Route::resource('/transaksi', TransaksiController::class);
+    // Route::resource('/pesanan', PesananController::class);
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/generate', [LaporanController::class, 'generate'])->name('laporan.generate');
+    // Route::get('/admin/notifications/unread', [NotificationController::class, 'getUnreadNotifications']);
+    // Route::get('/admin/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
+    // Route::post('/admin/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+});
+
+
+
+// Route::middleware(['auth','verified','owner'])->name('admin.')->prefix('owner')->group(function(){
+//     Route::get('/dashboard',[AdminController::class, 'index'])->name('dashboard.index');
+//     Route::resource('/detail', DetailMenuController::class)->parameters([
+//         'detail' => 'detailMenu'
+//     ]);
+//     // Route::resource('/menu', MenuController::class);
+//     // Route::resource('/meja', MejaController::class);
+//     // Route::resource('/reservasi', ReservasiController::class);
+//     // Route::get('/reservasi/{reservasi}/detail', [ReservasiController::class, 'detail'])
+//     //     ->name('reservasi.detail');
+//     // Route::resource('/transaksi', TransaksiController::class);
+//     // Route::resource('/pesanan', PesananController::class);
+//     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+//     Route::get('/laporan/generate', [LaporanController::class, 'generate'])->name('laporan.generate');
+//     Route::get('/admin/notifications/unread', [NotificationController::class, 'getUnreadNotifications']);
+//     Route::get('/admin/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead']);
+//     Route::post('/admin/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+// });
 //admin
 // Route::get('/admin/dashboard', function () {
 //     return view('admin.dashboard.index');

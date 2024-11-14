@@ -26,7 +26,7 @@
         <nav class="container px-6 py-8 mx-auto md:flex md:justify-between md:items-center">
             <div class="flex items-center justify-between">
                 <a class="text-xl font-bold bg-clip-text bg-gradient-to-r text-[#E0C48B] md:text-2xl hover:text-[#FFE077]"
-                    href="#">
+                    href="{{ route('frontend.reservasi.dashboard') }}">
                     AlsundReserv
                 </a>
                 <!-- Mobile menu button -->
@@ -46,23 +46,23 @@
             <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
             <div :class="isOpen ? 'flex' : 'hidden'"
                 class="flex-col mt-8 space-y-4 md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0">
-                <a class="bg-clip-text bg-gradient-to-r text-[#E0C48B] hover:text-[#FFE077]" href="#">Home</a>
-                <a class="bg-clip-text bg-gradient-to-r text-[#E0C48B] hover:text-[#FFE077]" href="#">Tentang
+                <a class="bg-clip-text bg-gradient-to-r text-[#E0C48B] hover:text-[#FFE077]" href="#section1">Home</a>
+                <a class="bg-clip-text bg-gradient-to-r text-[#E0C48B] hover:text-[#FFE077]" href="#section2">Tentang
                     Kami</a>
                 <a class="bg-clip-text bg-gradient-to-r text-[#E0C48B] hover:text-[#FFE077]"
                     href="{{ route('frontend.pemesanan.index') }}">Pemesanan</a>
                 <a class="bg-clip-text bg-gradient-to-r text-[#E0C48B] hover:text-[#FFE077]"
-                    href="#">Reservasi</a>
+                    href="#section5">Reservasi</a>
             </div>
             @guest
                 <div class="flex items-center space-x-4">
-                    <a href="/login"
+                    <a href="{{ route('login') }}"
                         class="px-4 py-2 text-sm font-medium text-gray-700 transition-colors duration-200 bg-white border rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400">
-                        Log in
+                        {{ __('Masuk') }}
                     </a>
-                    <a href="/register"
-                        class="px-4 py-2 text-sm font-medium text-black transition-colors duration-200 bg-[#E0C48B] rounded-md hover:from-green-500 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400">
-                        Sign up
+                    <a href="{{ route('register') }}"
+                        class="px-4 py-2 text-sm font-medium text-black transition-colors duration-200 bg-[#E0C48B] rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400">
+                        {{ __('Daftar') }}
                     </a>
                 </div>
             @endguest
@@ -86,7 +86,7 @@
                     <div x-show="dropdownOpen"
                         class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm  bg-[#141416] shadow-default dark:border-strokedark dark:bg-boxdark z-50">
                         <ul class="flex flex-col gap-5 px-6 py-7.5 dark:border-strokedark">
-                            <li>
+                            {{-- <li>
                                 <a href="profile.html"
                                     class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out text-[#E0C48B] hover:text-[#FFE077] lg:text-base">
                                     <svg class="fill-[#E0C48B]" width="22" height="22" viewBox="0 0 22 22"
@@ -100,7 +100,7 @@
                                     </svg>
                                     My Profile
                                 </a>
-                            </li>
+                            </li> --}}
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -357,7 +357,7 @@
                             <button type="button"
                                 class="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
                                 onclick="orderSystem.removeItem(${index})">
-                                Remove
+                                Hapus
                             </button>
                         </div>
                         <div class="mt-2 text-[#E0C48B]">

@@ -22,8 +22,10 @@
     stickyMenu: false,
     sidebarToggle: false,
     scrollTop: false
-}" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode')) || true;
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark text-bodydark bg-boxdark-2': darkMode }">
+}">
+
+    {{-- x-init="darkMode = JSON.parse(localStorage.getItem('darkMode')) || true;
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark text-bodydark bg-boxdark-2': darkMode }"> --}}
     <!-- ===== Preloader Start ===== -->
     <include src="./partials/preloader.html"></include>
     <!-- ===== Preloader End ===== -->
@@ -108,7 +110,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                 </div>
                                 <div class="space-y-2">
                                     <p class="font-semibold">Meja</p>
-                                    <p>${data.meja ? data.meja.nama : 'Tidak tersedia'}</p>
+                                    <p>${data.meja ? data.meja.nama : 'Tidak tersedia'} (${data.meja.jumlahPengunjung} Orang)</p>
                                 </div>
                                 <div class="space-y-2">
                                     <p class="font-semibold">Tanggal</p>

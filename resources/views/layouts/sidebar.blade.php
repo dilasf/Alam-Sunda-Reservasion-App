@@ -24,97 +24,137 @@
             <!-- Menu Group -->
             <div x-data="{ activeMenu: '{{ request()->route()->getName() }}' }">
                 <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">MENU</h3>
+                <ul class="mb-6 flex flex-col gap-1.5">
+                    @if (auth()->user()->role == 1)
+                        <li>
+                            <a href="{{ route('admin.dashboard.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.dashboard.index', 'text-bodydark1': activeMenu !== 'admin.dashboard.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.detail.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.detail.index', 'text-bodydark1': activeMenu !== 'admin.detail.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                <span>Detail Menu</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.menu.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.menu.index', 'text-bodydark1': activeMenu !== 'admin.menu.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                <span>Menu</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.meja.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.meja.index', 'text-bodydark1': activeMenu !== 'admin.meja.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                <span>Meja</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.reservasi.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.reservasi.index', 'text-bodydark1': activeMenu !== 'admin.reservasi.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>Reservasi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.pesanan.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.pesanan.index', 'text-bodydark1': activeMenu !== 'admin.pesanan.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <span>Pesanan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.transaksi.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.transaksi.index', 'text-bodydark1': activeMenu !== 'admin.transaksi.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                                <span>Transaksi</span>
+                            </a>
+                        </li>
+                    @elseif(auth()->user()->role == 2)
+                        <li>
+                            <a href="{{ route('owner.dashboard.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.dashboard.index', 'text-bodydark1': activeMenu !== 'admin.dashboard.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                    @endif
+
+                </ul>
+                <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">LAINNYA</h3>
 
                 <ul class="mb-6 flex flex-col gap-1.5">
-                    <li>
-                        <a href="{{ route('admin.dashboard.index') }}"
-                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
-                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.dashboard.index', 'text-bodydark1': activeMenu !== 'admin.dashboard.index' }">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.detail.index') }}"
-                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
-                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.detail.index', 'text-bodydark1': activeMenu !== 'admin.detail.index' }">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            <span>Detail Menu</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.menu.index') }}"
-                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
-                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.menu.index', 'text-bodydark1': activeMenu !== 'admin.menu.index' }">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                            <span>Menu</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.meja.index') }}"
-                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
-                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.meja.index', 'text-bodydark1': activeMenu !== 'admin.meja.index' }">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                            <span>Meja</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('admin.reservasi.index') }}"
-                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
-                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.reservasi.index', 'text-bodydark1': activeMenu !== 'admin.reservasi.index' }">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <span>Reservasi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.transaksi.index') }}"
-                            class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
-                            :class="{ 'bg-graydark text-white': activeMenu === 'admin.transaksi.index', 'text-bodydark1': activeMenu !== 'admin.transaksi.index' }">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                            </svg>
-                            <span>Transaksi</span>
-                        </a>
-                    </li>
+                    @if (auth()->user()->role == 1)
+                        <li>
+                            <a href="{{ route('admin.laporan.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'admin.laporan.index', 'text-bodydark1': activeMenu !== 'admin.laporan.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                                <span>Laporan</span>
+                            </a>
+                        </li>
+                    @elseif (auth()->user()->role == 2)
+                        <li>
+                            <a href="{{ route('owner.laporan.index') }}"
+                                class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium duration-300 ease-in-out hover:bg-graydark"
+                                :class="{ 'bg-graydark text-white': activeMenu === 'owner.laporan.index', 'text-bodydark1': activeMenu !== 'owner.laporan.index' }">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                                <span>Laporan</span>
+                            </a>
+                        </li>
+                    @endif
+                    <!-- Menu Item Chart -->
                 </ul>
             </div>
 
             <!-- Others Group -->
-            <div>
-                <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">OTHERS</h3>
-
-                <ul class="mb-6 flex flex-col gap-1.5">
-                    <!-- Menu Item Chart -->
-                    <li>
-                        <a class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                            href="chart.html" @click="selected = (selected === 'Laporan' ? '':'Chart')"
-                            :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Laporan') && (page === 'Laporan') }">
-                            Laporan
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
         </nav>
         <!-- Sidebar Menu -->
 

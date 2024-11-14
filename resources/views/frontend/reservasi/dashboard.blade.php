@@ -1,12 +1,13 @@
 <x-guest-layout>
     <!-- Main Hero Content -->
-    <div class="container max-w-lg px-4 py-70 mx-auto text-left bg-center bg-no-repeat bg-cover md:max-w-none md:text-center relative font-['Inter',sans-serif]"
+    <div id="section1"
+        class="container max-w-lg px-4 py-70 mx-auto text-left bg-center bg-no-repeat bg-cover md:max-w-none md:text-center relative font-['Inter',sans-serif]"
         style="background-image: url('{{ asset('src/images/cover/cover_welcome.jpg') }}')">
         <!-- Black overlay with blur -->
         <div class="absolute inset-0 bg-[#151518] bg-opacity-90 backdrop-blur-sm"></div>
 
         <!-- Content (now relative to appear above the overlay) -->
-        <div class="relative z-10">
+        <div class="relative z-10 flex flex-col items-center">
             <h1
                 class="font-['Inter',sans-serif] text-3xl bg-clip-text bg-gradient-to-r text-[#E0C48B] md:text-center sm:leading-none lg:text-5xl leading-relaxed pb-2">
                 <!-- Ditambahkan leading-relaxed dan pb-2 -->
@@ -15,24 +16,20 @@
             <div class="mx-auto mt-2 text-white md:text-center lg:text-lg">
                 Nikmati Masakan Khas Sunda Bersama Kami
             </div>
-            <div class="flex flex-col md:flex-row items-center justify-center mt-12 text-center">
-                <span class="relative inline-flex w-full md:w-auto md:mr-4 mb-4 md:mb-0">
-                    <a href="#_" type="button"
-                        class="w-full md:w-auto px-6 py-4 text-sm text-[#E0C48B] border border-[#E0C48B] hover:bg-[#E0C48B] hover:text-gray-900 transition-colors">
-                        Reservasi Sekarang
-                    </a>
-                </span>
-                <span class="relative inline-flex w-full md:w-auto">
-                    <a href="#_" type="button"
-                        class="w-full md:w-auto px-6 py-4 text-sm text-[#E0C48B] border border-[#E0C48B] hover:bg-[#E0C48B] hover:text-gray-900 transition-colors">
-                        Pesan Sekarang
-                    </a>
-                </span>
+            <div class="flex flex-col mt-10 sm:flex-row items-center justify-center gap-4">
+                <a href="#section5"
+                    class="w-full sm:w-auto px-4 py-3 text-[#E0C48B] border-2 border-[#E0C48B] hover:bg-[#E0C48B] hover:text-gray-900 transition-all duration-300 text-lg font-medium">
+                    Reservasi Sekarang
+                </a>
+                <a href="{{ route('frontend.pemesanan.index') }}"
+                    class="w-full sm:w-auto px-4 py-3 text-[#E0C48B] border-2 border-[#E0C48B] hover:bg-[#E0C48B] hover:text-gray-900 transition-all duration-300 text-lg font-medium">
+                    Pesan Sekarang
+                </a>
             </div>
         </div>
     </div>
     <!-- End Main Hero Content -->
-    <section class="px-2 py-32 bg-gradient-to-b min-h-screen from-[#1f1f22] to-[#151518] md:px-0">
+    <section id="section2" class="px-2 py-32 bg-gradient-to-b min-h-screen from-[#1f1f22] to-[#151518] md:px-0">
         <div class="container mx-auto px-4 py-16 flex flex-col md:flex-row items-center">
             <div class="md:w-1/2">
                 <div class="text-center font-['Inter',sans-serif] ">
@@ -58,8 +55,8 @@
                         +62 812-2397-8735
                     </p>
                     <span class="relative inline-flex w-full md:w-auto md:mr-4 mb-4 md:mb-0">
-                        <a href="#_" type="button"
-                            class="w-full md:w-auto px-6 py-4 text-sm text-[#E0C48B] border border-[#E0C48B] hover:bg-[#E0C48B] hover:text-gray-900 transition-colors">
+                        <a href="#section5" type="button"
+                            class="w-full sm:w-auto px-4 py-3 text-sm text-[#E0C48B] border-2 border-[#E0C48B] hover:bg-[#E0C48B] hover:text-gray-900 transition-all duration-300 font-medium">
                             Reservasi Sekarang
                         </a>
                     </span>
@@ -77,7 +74,7 @@
             </div>
         </div>
     </section>
-    <section class="bg-[#1f1f22] py-40"
+    <section id="section3" class="bg-[#1f1f22] h-screen flex items-center"
         style="
     background-color: #151516;
     background-image: url('{{ asset('src/images/cover/shape-2.png') }}');
@@ -85,15 +82,15 @@
     background-size: 25% auto;
     background-position: top right;
 ">
-        <!-- Header Section -->
-        <div class="container mx-auto px-25">
-            <div class="mb-8 text-center">
-                <div class="flex items-center justify-center space-x-3">
-                    <div class="text-center mb-20">
-                        <h1 class="text-xl mb-5 text-[#E0C48B]">
+        <div class="container mx-auto px-4">
+            <!-- Header Section -->
+            <div class="mb-30">
+                <div class="flex items-center justify-center">
+                    <div class="text-center">
+                        <h1 class="text-xl mb-3 text-[#E0C48B]">
                             Fasilitas & Layanan
                         </h1>
-                        <div class="flex justify-center mb-5">
+                        <div class="flex justify-center mb-3">
                             <img class="" src="{{ asset('src/images/cover/separator.svg') }}" alt=""
                                 width="95">
                         </div>
@@ -105,50 +102,59 @@
             </div>
 
             <!-- Features Grid -->
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 place-items-center">
                 <!-- Feature 1 -->
-                <div
-                    class="flex flex-col items-center justify-center text-center p-6 bg-[#1f1f22] shadow-lg hover:shadow-xl transition-shadow duration-300 w-[250px] h-[250px]">
-                    <img src="{{ asset('src/images/cover/fasilitas.png') }}" alt="Traditional house and bowl icon"
-                        class="mb-4 h-24 w-24" />
-                    <p class="text-lg font-semibold text-[#E0C48B]">
-                        Fasilitas
-                    </p>
+                <div class="relative">
+                    <div
+                        class="flex flex-col items-center justify-center text-center p-6 bg-[#1f1f22] shadow-md hover:shadow-lg w-[250px] h-[250px] hover:scale-110 transition-transform duration-300 ease-in-out">
+                        <img src="{{ asset('src/images/cover/fasilitas.png') }}" alt="Traditional house and bowl icon"
+                            class="mb-4 h-24 w-24" />
+                        <p class="text-lg font-semibold text-[#E0C48B]">
+                            Fasilitas
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Feature 2 -->
-                <div
-                    class="flex flex-col items-center justify-center text-center p-6 bg-[#111111] shadow-lg hover:shadow-xl transition-shadow duration-300 w-[250px] h-[250px]">
-                    <img src="{{ asset('src/images/cover/higienis.png') }}" alt="Bowl of fresh vegetables icon"
-                        class="mb-4 h-24 w-24" />
-                    <p class="text-lg font-semibold text-[#E0C48B]">
-                        Higienis, Bersih & Segar
-                    </p>
+                <div class="relative">
+                    <div
+                        class="flex flex-col items-center justify-center text-center p-6 bg-[#111111] shadow-md hover:shadow-lg w-[250px] h-[250px] hover:scale-110 transition-transform duration-300 ease-in-out">
+                        <img src="{{ asset('src/images/cover/higienis.png') }}" alt="Bowl of fresh vegetables icon"
+                            class="mb-4 h-24 w-24" />
+                        <p class="text-lg font-semibold text-[#E0C48B]">
+                            Higienis, Bersih & Segar
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Feature 3 -->
-                <div
-                    class="flex flex-col items-center justify-center text-center p-6 bg-[#1f1f22] shadow-lg hover:shadow-xl transition-shadow duration-300 w-[250px] h-[250px]">
-                    <img src="{{ asset('src/images/cover/halal.png') }}" alt="Halal certification icon"
-                        class="mb-4 h-24 w-24" />
-                    <p class="text-lg font-semibold text-[#E0C48B]">
-                        Berlandaskan Nilai Islami
-                    </p>
+                <div class="relative">
+                    <div
+                        class="flex flex-col items-center justify-center text-center p-6 bg-[#1f1f22] shadow-md hover:shadow-lg w-[250px] h-[250px] hover:scale-110 transition-transform duration-300 ease-in-out">
+                        <img src="{{ asset('src/images/cover/halal.png') }}" alt="Halal certification icon"
+                            class="mb-4 h-24 w-24" />
+                        <p class="text-lg font-semibold text-[#E0C48B]">
+                            Berlandaskan Nilai Islami
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Feature 4 -->
-                <div
-                    class="flex flex-col items-center justify-center text-center p-6 bg-[#111111] shadow-lg hover:shadow-xl transition-shadow duration-300 w-[250px] h-[250px]">
-                    <img src="{{ asset('src/images/cover/gratis.png') }}" alt="Free items promotion icon"
-                        class="mb-4 h-24 w-24" />
-                    <p class="text-lg font-semibold text-[#E0C48B]">
-                        Banyak Gratisnya
-                    </p>
+                <div class="relative">
+                    <div
+                        class="flex flex-col items-center justify-center text-center p-6 bg-[#111111] shadow-md hover:shadow-lg w-[250px] h-[250px] hover:scale-110 transition-transform duration-300 ease-in-out">
+                        <img src="{{ asset('src/images/cover/gratis.png') }}" alt="Free items promotion icon"
+                            class="mb-4 h-24 w-24" />
+                        <p class="text-lg font-semibold text-[#E0C48B]">
+                            Banyak Gratisnya
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="pt-4 pb-12 min-h-screen flex flex-col items-center justify-center font-['Inter',sans-serif] "
+    <section id="section4"
+        class="pt-4 pb-12 min-h-screen flex flex-col items-center justify-center font-['Inter',sans-serif] "
         style="
         background-color: #141416;
         background-image: url('{{ asset('src/images/cover/shape-5.png') }}');
@@ -199,12 +205,12 @@
             <div class="text-center mt-8">
                 <p class="text-sm text-gray-400">
                     Warung buka pada pukul
-                    <span class="font-bold">10:00 am</span> sampai
-                    <span class="font-bold">9:00 am</span>
+                    <span class="font-bold">09:00 am</span> sampai
+                    <span class="font-bold">09:00 pm</span>
                 </p>
                 <button
-                    class="mt-4 px-6 py-4 text-sm text-[#E0C48B] border border-[#E0C48B] hover:bg-[#E0C48B] hover:text-gray-900 transition-colors">
-                    <a href="#">PESAN SEKARANG</a>
+                    class="w-full mt-4 sm:w-auto px-4 py-3 text-sm text-[#E0C48B] border-2 border-[#E0C48B] hover:bg-[#E0C48B] hover:text-gray-900 transition-all duration-300 font-medium">
+                    <a href="{{ route('frontend.pemesanan.index') }}">PESAN SEKARANG</a>
                 </button>
             </div>
         </div>
@@ -270,14 +276,16 @@
             </div>
         </div>
     </section> --}}
-    <section class="pt-12 pb-12 bg-gradient-to-r min-h-screen from-[#1f1f22] to-[#151518] font-['Inter',sans-serif]">
+    <section id="section5"
+        class="pt-12 pb-12 bg-gradient-to-r min-h-screen from-[#1f1f22] to-[#151518] font-['Inter',sans-serif]">
         <div class="container mx-auto p-6 sm:p-12 md:w-3/4">
             <div class="grid grid-cols-1 md:grid-cols-3">
                 <!-- Reservasi Online (Bagian Kiri) -->
                 <div class="md:col-span-2 bg-[#0D0D0B] shadow-lg p-8">
                     <h1 class="text-6xl mb-4 text-white text-center">Reservasi Online</h1>
                     <p class="text-sm mb-6 text-white text-center">
-                        Permintaan Reservasi <span class="text-[#E0C48B]">+62 812-2397-8735</span> atau isi Form ini
+                        Permintaan Reservasi Lebih Dari 10? Hubungi <span class="text-[#E0C48B]">+62
+                            812-2397-8735</span>
                     </p>
                     @if ($errors->any())
                         <div class="p-4 mb-4 bg-red-100 border border-red-400 text-red-700">
@@ -299,25 +307,25 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <input type="text" name="nama_depan" placeholder="Nama Depan"
                                 value="{{ old('nama_depan') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('nama_depan') @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFE077] focus:border-[#FFE077] focus:outline-none transition-all @error('nama_depan') border-red-500 @enderror"
                                 required>
                             <input type="text" name="nama_belakang" placeholder="Nama Belakang"
                                 value="{{ old('nama_belakang') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('nama_belakang') @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFE077] focus:border-[#FFE077] focus:outline-none transition-all @error('nama_belakang') border-red-500 @enderror"
                                 required>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <input type="email" name="email" placeholder="Email" value="{{ old('email') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('email') @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFE077] focus:border-[#FFE077] focus:outline-none transition-all @error('email') border-red-500 @enderror"
                                 required>
                             <input type="text" name="no_telepon" placeholder="Nomor Telepon"
                                 value="{{ old('no_telepon') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('no_telepon') @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFE077] focus:border-[#FFE077] focus:outline-none transition-all @error('no_telepon') border-red-500 @enderror"
                                 required>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <select name="jumlahPengunjung"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors @error('jumlahPengunjung') @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFE077] focus:border-[#FFE077] focus:outline-none transition-all @error('jumlahPengunjung') border-red-500 @enderror"
                                 required>
                                 <option class="text-gray-400" value="">Jumlah Pengunjung</option>
                                 <option value="1" {{ old('jumlahPengunjung') == '1' ? 'selected' : '' }}>1 Orang
@@ -334,14 +342,15 @@
                                 </option>
                             </select>
                             <input type="datetime-local" name="tanggal" placeholder="Tanggal dan Waktu"
-                                value="{{ old('tanggal', date('Y-m-d\TH:i')) }}" min="{{ date('Y-m-d\TH:i') }}"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-[#FFE077] transition-colors [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert-[0.4] @error('tanggal') @enderror"
+                                value="{{ old('tanggal', date('Y-m-d\TH:i')) }}"
+                                min="{{ now()->format('Y-m-d\TH:i') }}"
+                                max="{{ now()->addDays(7)->format('Y-m-d\TH:i') }}"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFE077] focus:border-[#FFE077] focus:outline-none transition-all [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert-[0.4] @error('tanggal') border-red-500 @enderror"
                                 required>
-
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-4">
                             <select name="idMeja"
-                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:outline-none focus:border-[#FFE077] transition-colors @error('idMeja') @enderror"
+                                class="p-3 bg-[#1A1A1C] border border-gray-700 text-white focus:ring-2 focus:ring-[#FFE077] focus:border-[#FFE077] focus:outline-none transition-all @error('idMeja') border-red-500 @enderror"
                                 required>
                                 <option value="">Pilih Meja</option>
                                 @foreach ($mejas as $meja)
@@ -353,7 +362,7 @@
                             </select>
                         </div>
                         <button type="submit"
-                            class="w-full p-3 bg-[#FFE077] text-black font-bold hover:bg-[#b69b41] transition-colors">
+                            class="w-full p-3 bg-[#FFE077] text-black font-bold hover:bg-[#b69b41] transition-all">
                             BUAT RESERVASI
                         </button>
                     </form>
@@ -364,7 +373,7 @@
                     style="background-image: url('{{ asset('src/images/cover/form-pattern.png') }}')">
                     <h1 class="text-4xl mb-6 text-white">Hubungi Kami</h1>
                     <p class="text-lg mb-4 text-white">
-                        Permintaan Reservasi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
+                        Butuh Bantuan? Hubungi <span class="text-[#E0C48B]">+62 812-2397-8735</span>
                     </p>
                     <div class="border-t border-gray-700 my-4"></div>
                     <p class="text-md mb-4 text-white">

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('item_pesanans', function (Blueprint $table) {
             $table->id('idItemPesanan');
             $table->foreignId('idPesanan')->constrained('pesanans', 'idPesanan')->onDelete('cascade');
-            $table->tinyInteger('idMenus')->unsigned(); // Mengubah tipe data agar sesuai dengan tabel menus
+            $table->tinyInteger('idMenus')->unsigned();
             $table->foreign('idMenus')->references('idMenu')->on('menus')->onDelete('cascade');
             $table->smallInteger('jumlah');
             $table->decimal('harga', 10, 2);

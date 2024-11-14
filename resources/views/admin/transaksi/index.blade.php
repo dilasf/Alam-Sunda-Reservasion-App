@@ -1,5 +1,20 @@
 <x-admin-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-title-md2 font-bold text-black dark:text-white">
+                Transaksi
+            </h2>
+
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li class="font-medium">
+                        Admin /
+                        {{-- <a class="font-medium" href="index.html">Menu /</a> --}}
+                    </li>
+                    <li class="text-primary">Transaksi</li>
+                </ol>
+            </nav>
+        </div>
         {{-- Alert Messages --}}
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
@@ -20,59 +35,75 @@
                 <table class="w-full table-auto">
                     <thead>
                         <tr class="bg-gray-200 text-left dark:bg-meta-4">
-                            <th class="px-4 py-4 font-medium text-black dark:text-white">No</th>
+                            <th class="px-4 py-4 font-medium text-black dark:text-white">ID Pesanan</th>
+                            <th class="px-4 py-4 font-medium text-black dark:text-white">ID Reservasi</th>
                             <th class="px-4 py-4 font-medium text-black dark:text-white">Nama Pemesan</th>
                             <th class="px-4 py-4 font-medium text-black dark:text-white">Tanggal</th>
                             <th class="px-4 py-4 font-medium text-black dark:text-white">Total Pembayaran</th>
                             <th class="px-4 py-4 font-medium text-black dark:text-white">Status</th>
-                            <th class="px-4 py-4 font-medium text-black dark:text-white">Bukti Pembayaran</th>
                             <th class="px-4 py-4 font-medium text-black dark:text-white">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($transaksis as $transaksi)
                             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200">
-                                <td class="border-t px-4 py-4">{{ $transaksi->idTransaksi }}</td>
                                 <td class="border-t px-4 py-4">
-                                    {{ $transaksi->reservasi->nama_depan }} {{ $transaksi->reservasi->nama_belakang }}
+                                    {{ $transaksi->pesanan ? $transaksi->pesanan->idPesanan : '-' }}
                                 </td>
                                 <td class="border-t px-4 py-4">
-                                    {{ \Carbon\Carbon::parse($transaksi->tanggal)->format('d/m/Y') }}
+                                    {{ $transaksi->reservasi ? $transaksi->reservasi->idReservasi : '-' }}
                                 </td>
                                 <td class="border-t px-4 py-4">
-                                    Rp {{ number_format($transaksi->totalPembayaran, 0, ',', '.') }}
+                                    @if ($transaksi->pesanan)
+                                        {{ $transaksi->pesanan->user->name }}
+                                    @elseif($transaksi->reservasi)
+                                        {{ $transaksi->reservasi->nama_depan }}
+                                        {{ $transaksi->reservasi->nama_belakang }}
+                                    @endif
+                                </td>
+                                <td class="border-t px-4 py-4">
+                                    {{ \Carbon\Carbon::parse($transaksi->created_at)->format('d/m/Y') }}
+                                </td>
+                                <td class="border-t px-4 py-4">
+                                    @if ($transaksi->pesanan)
+                                        Rp {{ number_format($transaksi->pesanan->calculateTotal(), 0, ',', '.') }}
+                                    @elseif($transaksi->reservasi)
+                                        Rp {{ number_format($transaksi->totalPembayaran, 0, ',', '.') }}
+                                    @endif
                                 </td>
                                 <td class="border-t px-4 py-4">
                                     <span
                                         class="px-3 py-1 text-xs rounded-full font-medium
-                                    {{ $transaksi->isPending() ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                    {{ $transaksi->isVerified() ? 'bg-green-100 text-green-800' : '' }}
-                                    {{ $transaksi->isDibayar() ? 'bg-blue-100 text-blue-800' : '' }}
-                                    {{ $transaksi->isDitolak() ? 'bg-red-100 text-red-800' : '' }}">
+                                        {{ $transaksi->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                        {{ $transaksi->status === 'dibayar' ? 'bg-green-100 text-green-800' : '' }}
+                                        {{ $transaksi->status === 'diverifikasi' ? 'bg-blue-100 text-blue-800' : '' }}
+                                        {{ $transaksi->status === 'ditolak' ? 'bg-red-100 text-red-800' : '' }}">
                                         {{ ucfirst($transaksi->status) }}
                                     </span>
                                 </td>
-                                <td class="border-t px-4 py-4">
-                                    @if ($transaksi->fotoBukti)
-                                        <a href="#" onclick="showBukti('{{ $transaksi->getBuktiUrl() }}')"
-                                            class="text-blue-600 hover:text-blue-900">
-                                            Lihat Bukti
-                                        </a>
+                                {{-- <td class="border-t px-4 py-4">
+                                    @if ($transaksi->pesanan)
+                                        @if ($transaksi->pesanan->tipePesanan === 'delivery')
+                                            <span class="text-gray-600">
+                                                {{ $transaksi->pesanan->pengiriman->alamat ?? 'Belum ada alamat' }}
+                                            </span>
+                                        @else
+                                            <span class="text-gray-600">Pickup</span>
+                                        @endif
                                     @else
-                                        <span class="text-gray-500">Belum ada bukti</span>
+                                        @if ($transaksi->reservasi && $transaksi->reservasi->bukti_pembayaran)
+                                            <a href="#"
+                                                onclick="showBukti('{{ Storage::url($transaksi->reservasi->bukti_pembayaran) }}')"
+                                                class="text-blue-600 hover:text-blue-900">
+                                                Lihat Bukti
+                                            </a>
+                                        @else
+                                            <span class="text-gray-500">Belum ada bukti</span>
+                                        @endif
                                     @endif
-                                </td>
+                                </td> --}}
                                 <td class="border-t px-4 py-4">
                                     <div class="flex space-x-2">
-                                        {{-- <a href="{{ route('admin.transaksi.show', $transaksi) }}"
-                                            class="inline-flex items-center px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                            Detail
-                                        </a> --}}
                                         <a href="{{ route('admin.transaksi.edit', $transaksi) }}"
                                             class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-200">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
@@ -120,15 +151,18 @@
                                     Bukti Pembayaran
                                 </h3>
                                 <div class="mt-4">
-                                    @if ($transaksi->fotoBukti)
-                                        <div class="mb-6">
-                                            <div class="border border-stroke dark:border-strokedark rounded-sm p-4">
-                                                <img id="buktiImage" src="{{ Storage::url($transaksi->fotoBukti) }}"
-                                                    alt="{{ $transaksi->idTransaksi }}"
-                                                    class="max-w-full mx-auto rounded-sm shadow">
+                                    @foreach ($transaksis as $transaksi)
+                                        @if ($transaksi->fotoBukti)
+                                            <div class="mb-6">
+                                                <div class="border border-stroke dark:border-strokedark rounded-sm p-4">
+                                                    <img id="buktiImage"
+                                                        src="{{ Storage::url($transaksi->fotoBukti) }}"
+                                                        alt="{{ $transaksi->idTransaksi }}"
+                                                        class="max-w-full mx-auto rounded-sm shadow">
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endif
+                                        @endif
+                                    @endforeach
                                 </div>
                             </div>
                         </div>

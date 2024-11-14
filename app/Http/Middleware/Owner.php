@@ -22,16 +22,16 @@ class Owner
 
         //admin
         $userRole = Auth::user()->role;
-        if($userRole == 1){
+        if($userRole === 1){
             return redirect()->route(route: 'admin.dashboard.index');
         }
         //owner
-        elseif($userRole == 2){
+        elseif($userRole === 2){
             return $next($request);
 
         //pelanggan
         }
-        elseif($userRole == 3){
+        elseif($userRole === 3){
             return redirect()->route('frontend.reservasi.dashboard');
         }
     }
