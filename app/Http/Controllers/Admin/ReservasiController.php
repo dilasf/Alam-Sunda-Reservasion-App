@@ -73,6 +73,11 @@ class ReservasiController extends Controller
             return back()->with('error', 'Jumlah pengunjung melebihi kapasitas meja');
         }
 
+        $tanggal = Carbon::parse($request->tanggal);
+        if ($tanggal->hour < 9 || $tanggal->hour >= 21) {
+            return back()->with('error', 'Reservasi hanya dapat dilakukan antara pukul 09.00 - 21.00');
+        }
+
         $reservasi = Reservasi::create([
             'nama_depan' => $request->nama_depan,
             'nama_belakang' => $request->nama_belakang,
@@ -82,7 +87,7 @@ class ReservasiController extends Controller
             'idMeja' => $request->idMeja,
             'tanggal' => $request->tanggal,
             'jumlahPengunjung' => $request->jumlahPengunjung,
-            'status' => $request->status ?? 'pending', // Default ke 'pending' jika tidak ada status yang diberikan
+            'status' => $request->status ?? 'pending',
         ]);
 
         $meja->update(['status' => 'Tidak Tersedia']);

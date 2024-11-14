@@ -55,7 +55,16 @@ public function storeReservasi(Request $request)
             'email' => 'required|email',
             'no_telepon' => 'required|string',
             'idMeja' => 'required|exists:mejas,idMeja',
-            'tanggal' => 'required|date_format:Y-m-d\TH:i',
+            'tanggal' => [
+                'required',
+                'date_format:Y-m-d\TH:i',
+                function ($attribute, $value, $fail) {
+                    $date = Carbon::createFromFormat('Y-m-d\TH:i', $value);
+                    if ($date->hour < 9 || $date->hour >= 21) {
+                        $fail('Reservasi hanya dapat dilakukan pada pukul 09:00 - 21:00.');
+                    }
+                },
+            ],
             'jumlahPengunjung' => 'required|integer|min:1'
         ], $messages);
 
@@ -140,8 +149,8 @@ public function storeReservasi(Request $request)
         \Illuminate\Support\Facades\Log::error('Validation error', ['errors' => $e->errors()]);
         return back()
             ->withErrors($e->errors())
-            ->withInput()
-            ->with('error', 'Mohon periksa kembali input Anda');
+            ->withInput();
+
     } catch (\Exception $e) {
         DB::rollback();
         \Illuminate\Support\Facades\Log::error('General error', ['message' => $e->getMessage()]);

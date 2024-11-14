@@ -20,6 +20,8 @@
                                 <p class="text-sm text-gray-400">Alamat Pengiriman: {{ $pesanan->pengiriman->alamat }}
                                 </p>
                             @endif
+                            <p class="text-sm text-gray-400">Transfer ke Rekening ini:</p>
+                            <p class="text-sm text-gray-400">BCA: 1970713405 A/n Apep Muhammad Hanafiah </p>
                             <p class="text-sm text-gray-400">Upload bukti pembayaran Anda di bawah ini</p>
                         </div>
                     </div>

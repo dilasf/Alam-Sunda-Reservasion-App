@@ -15,6 +15,8 @@
                         <div class="p-4 bg-[#1A1A1C]">
                             <p class="mb-2">Total Pembayaran: <span class="text-[#FFE077]">Rp
                                     {{ number_format($transaksi->totalPembayaran, 0, ',', '.') }}</span></p>
+                            <p class="text-sm text-gray-400">Transfer ke Rekening ini:</p>
+                            <p class="text-sm text-gray-400">BCA: 1970713405 A/n Apep Muhammad Hanafiah </p>
                             <p class="text-sm text-gray-400">Upload bukti pembayaran Anda di bawah ini</p>
                         </div>
                     </div>
