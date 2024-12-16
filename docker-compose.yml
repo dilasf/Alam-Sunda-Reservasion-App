@@ -1,42 +1,42 @@
-version: '3.8'
+  version: '3.8'
 
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: laravel-app
-    depends_on:
-      - database
-    volumes:
-      - .:/var/www/html
-    ports:
-      - "8080:80"
-    environment:
-      APACHE_DOCUMENT_ROOT: /var/www/html/public
-    working_dir: /var/www/html
-    command: bash -c "composer install && php artisan key:generate && php artisan migrate && apache2-foreground"
+  services:
+    app:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: laravel-app
+      depends_on:
+        - database
+      volumes:
+        - .:/var/www/html
+      ports:
+        - "8080:80"
+      environment:
+        APACHE_DOCUMENT_ROOT: /var/www/html/public
+      working_dir: /var/www/html
+      command: bash -c "composer install && php artisan key:generate && php artisan migrate && apache2-foreground"
 
-  database:
-    image: mysql:8.0
-    container_name: laravel-database
-    environment:
-      MYSQL_USER: "laravel"
-      MYSQL_DATABASE: "laravel"
-      MYSQL_PASSWORD: "laravel"
-      MYSQL_ROOT_PASSWORD: "root"
-    ports:
-      - "8306:3306"
-    volumes:
-      - database:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    database:
+      image: mysql:8.0
+      container_name: laravel-database
+      environment:
+        MYSQL_USER: "laravel"
+        MYSQL_DATABASE: "laravel"
+        MYSQL_PASSWORD: "laravel"
+        MYSQL_ROOT_PASSWORD: "root"
+      ports:
+        - "8306:3306"
+      volumes:
+        - database:/var/lib/mysql
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+        interval: 10s
+        timeout: 5s
+        retries: 3
 
-volumes:
-  database:
+  volumes:
+    database:
 
 
 
